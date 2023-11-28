@@ -6,6 +6,7 @@ local plugins = {}
 -- TODO: map plugin names to nix store paths
 
 
+
 function M.populate_plugin_table()
   -- TODO: create nix command to query either the nix store or nix configuration file for packages prefixed with 'neovim.plugins'
   local nix_command = ""
@@ -26,10 +27,11 @@ end
 
 function M.get_plugin_path(plugin_name)
   if not plugin_name then
-    -- TODO: raise exception
+    error("plugin_name not provided")
   end
   if not M.tableContains(plugins, plugin_name) then
-    -- TODO: raise exception
+    local message = 
+    error("lazy-nix-helper plugin table does not contain " .. plugin_name)
   end
   return plugins[plugin_name]
 end
