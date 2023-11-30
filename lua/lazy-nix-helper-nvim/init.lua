@@ -2,16 +2,16 @@ local M = {}
 
 local plugins = {}
 
-function error(msg)
+local function error(msg)
   vim.notify(msg, vim.log.levels.ERROR, { title = "lazy-nix-helper" })
 end
 
 -- TODO: should this be checking nix-store is installed instead?
-function nix_is_installed()
+local function nix_is_installed()
   return vim.fn.executable("nix")
 end
 
-function parse_plugin_name_from_nix_store_path(path)
+local function parse_plugin_name_from_nix_store_path(path)
   -- path looks like:
   -- /nix/store/<hash>-vimplugin-<name>[-<date>]
   -- use string.match to capture everything after "vimplugin-"
@@ -44,7 +44,7 @@ function M.populate_plugin_table()
 end
 
 
-function table_contains(table, key)
+local function table_contains(table, key)
   return table[key] ~= nil
 end
 
