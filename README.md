@@ -38,11 +38,34 @@ TODO:
 
 ### Lazy-Nix-Helper Configuration
 
-TODO: instructions for configuring this plugin.
+*Bootstrapping*
+
+The nix store path for the Lazy-Nix-Helper plugin itself must be bootstrapped. We can't rely on the built in functionality to find the nix store path because the plugin hasn't been loaded yet, and the plugin can't be loaded without its nix store path, etc. To account for this, set the `dir` option as shown
+
+*Loading first*
+
+Because every other plugin in your configuration will rely on Lazy-Nix-Helper for its directory path, we must make sure it's loaded first. To accomplish this, set the `lazy` option to `false`, and the `priority` option to the higher value than any other plugin in your configuration.
+
+```Lua
+{
+  b-src/lazy-nix-helper.nvim,
+  dir = TODO: bootstrap,
+  lazy = false,
+  priority = 10000,
+}
+```
 
 ### Configuration of Other Plugins
 
-TODO: instructions for updating other plugin configuration.
+To provide nix store paths to the rest of the plugins in your configuration, update their configuration as in this example
+
+```Lua
+{
+  repo/my-cool-plugin.nvim,
+  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin"),
+  ...
+}
+```
 
 ### Mason
 
@@ -57,5 +80,4 @@ Lazy-Nix-Helper can't currently find plugins installed by Nix on non-NixOS platf
 TODO: function to show plugins found by Lazy-Nix-Helper.
 TODO: instructions for debug logging.
 TODO: health check?
-
 
