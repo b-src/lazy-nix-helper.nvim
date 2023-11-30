@@ -53,7 +53,7 @@ function M.get_plugin_path(plugin_name)
     error("plugin_name not provided")
   end
   if not table_contains(plugins, plugin_name) then
-    error("lazy-nix-helper plugin table does not contain " .. plugin_name)
+    return nil
   end
   return plugins[plugin_name]
 end
