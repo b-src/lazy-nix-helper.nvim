@@ -29,16 +29,20 @@ function M.populate_plugin_table()
     -- NOTE: this will only work for nixos, not packages installed via nix on non-nixos systems
     local nix_command = "nix-store --query --requisites /run/current-system | grep vimplugin | sort"
     local nix_search_handle = io.popen(nix_command)
-    local nix_search_results = nix_search_handle:lines()
-    -- TODO: this is needed, we don't want to leave dangling file handles for lua's GC to clean up
-    -- however, when this is included, attempting to use nix_search_results below gives an error:
-    -- "attempt to use a closed file"
-    -- I'm not sure why that is.
-    -- nix_search_handle:close()
-    for line in nix_search_results do
-      local plugin_path = line
-      local plugin_name = parse_plugin_name_from_nix_store_path(line)
-      plugins[plugin_name] = plugin_path
+    if nix_search_handle == nil then
+      error("Unable to get nix-store search results")
+    else
+      local nix_search_results = nix_search_handle:lines()
+      -- TODO: this is needed, we don't want to leave dangling file handles for lua's GC to clean up
+      -- however, when this is included, attempting to use nix_search_results below gives an error:
+      -- "attempt to use a closed file"
+      -- I'm not sure why that is.
+      -- nix_search_handle:close()
+      for line in nix_search_results do
+        local plugin_path = line
+        local plugin_name = parse_plugin_name_from_nix_store_path(line)
+        plugins[plugin_name] = plugin_path
+      end
     end
   end
 end
