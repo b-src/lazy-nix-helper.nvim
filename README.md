@@ -62,7 +62,7 @@ To provide nix store paths to the rest of the plugins in your configuration, upd
 ```Lua
 {
   repo/my-cool-plugin.nvim,
-  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin"),
+  dir = function() require("lazy-nix-helper").get_plugin_path("my-cool-plugin") end,
   ...
 }
 ```
