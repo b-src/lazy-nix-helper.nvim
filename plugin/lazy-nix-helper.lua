@@ -1,1 +1,1 @@
-require("lazy-nix-helper-nvim").populate_plugin_table()
+require("lazy-nix-helper").populate_plugin_table()
