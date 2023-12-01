@@ -55,14 +55,19 @@ Because every other plugin in your configuration will rely on Lazy-Nix-Helper fo
 }
 ```
 
+### Configuration of Lazy itself
+
+Since Lazy needs to be loaded before anything else can happen it will also need to be bootstrapped. TODO: instructions
+
 ### Configuration of Other Plugins
 
 To provide nix store paths to the rest of the plugins in your configuration, update their configuration as in this example
 
+TODO: these instructions don't work as written. It seems even with lazy-nix-helper loaded first, it's not loaded in time for lazy to evaluate the `dir` path in other plugins' config.
 ```Lua
 {
   repo/my-cool-plugin.nvim,
-  dir = function() require("lazy-nix-helper").get_plugin_path("my-cool-plugin") end,
+  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin"),
   ...
 }
 ```
