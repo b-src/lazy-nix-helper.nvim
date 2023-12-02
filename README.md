@@ -107,8 +107,8 @@ end
 vim.opt.rtp:prepend(lazy_nix_helper_path)
 
 -- call the Lazy Nix Helper setup function. pass a default lazypath for non-nix systems as an argument
-non_nix_lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-require("lazy-nix-helper").setup("non_nix_lazypath")
+local non_nix_lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+require("lazy-nix-helper").setup(non_nix_lazypath)
 
 -- get the lazypath from Lazy Nix Helper
 local lazypath = require("lazy-nix-helper").lazypath()
