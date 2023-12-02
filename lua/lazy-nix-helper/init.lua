@@ -1,10 +1,8 @@
+local Util = require("lazy-nix-helper.util")
+
 local M = {}
 
 local plugins = {}
-
-local function error(msg)
-  vim.notify(msg, vim.log.levels.ERROR, { title = "lazy-nix-helper" })
-end
 
 -- TODO: should this be checking nix-store is installed instead?
 local function nix_is_installed()
@@ -30,7 +28,7 @@ function M.populate_plugin_table()
     local nix_command = "nix-store --query --requisites /run/current-system | grep vimplugin | sort"
     local nix_search_handle = io.popen(nix_command)
     if nix_search_handle == nil then
-      error("Unable to get nix-store search results")
+      Util.error("Unable to get nix-store search results")
     else
       local nix_search_results = nix_search_handle:lines()
       -- TODO: this is needed, we don't want to leave dangling file handles for lua's GC to clean up
@@ -54,7 +52,7 @@ end
 
 function M.get_plugin_path(plugin_name)
   if not plugin_name then
-    error("plugin_name not provided")
+    Util.error("plugin_name not provided")
   end
   if not table_contains(plugins, plugin_name) then
     return nil
