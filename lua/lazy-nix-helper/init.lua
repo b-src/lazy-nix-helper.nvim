@@ -1,4 +1,5 @@
 local Util = require("lazy-nix-helper.util")
+local Config = require("lazy-nix-helper.config")
 
 local M = {}
 
@@ -49,7 +50,6 @@ function M.populate_plugin_table()
   end
 end
 
-
 local function table_contains(table, key)
   return table[key] ~= nil
 end
@@ -62,6 +62,10 @@ function M.get_plugin_path(plugin_name)
     return nil
   end
   return plugins[plugin_name]
+end
+
+function M.lazypath()
+  return M.get_plugin_path("lazy") or Config.options.lazypath
 end
 
 
