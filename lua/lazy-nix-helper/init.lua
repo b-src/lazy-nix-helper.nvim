@@ -4,6 +4,10 @@ local M = {}
 
 local plugins = {}
 
+function M.setup(options)
+  require("lazy-nix-helper.config").setup(options)
+end
+
 -- TODO: should this be checking nix-store is installed instead?
 local function nix_is_installed()
   return vim.fn.executable("nix")
