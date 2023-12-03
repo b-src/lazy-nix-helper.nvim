@@ -5,6 +5,7 @@
 - [x] naive implementation of nix store plugin discovery
 - [ ] make plugin discovery work in a non-nixos environment with nix installed
 - [ ] more robust implementation of nix store plugin discovery
+- [ ] find plugins from all possible package groups, not just `vimplugin` and `lua5.1`
 - [x] get nix store plugin path given a plugin name
 - [ ] can plugin names be made friendlier in configuration without risking collisions?
         can we let the user supply "my-plugin" while also checking the store for
@@ -23,3 +24,7 @@
 ## Installation
 
 - [ ] package plugin and get it merged to nixpkgs
+
+## Meta
+
+- [ ] write some tests
