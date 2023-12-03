@@ -64,6 +64,7 @@ function M.get_plugin_path(plugin_name)
   if not plugin_name then
     Util.error("plugin_name not provided")
   end
+  -- TODO: is this check necessary?
   if not table_contains(plugins, plugin_name) then
     return nil
   end
