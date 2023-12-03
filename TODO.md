@@ -6,7 +6,11 @@
 - [ ] make plugin discovery work in a non-nixos environment with nix installed
 - [ ] more robust implementation of nix store plugin discovery
 - [x] get nix store plugin path given a plugin name
+- [ ] can plugin names be made friendlier in configuration without risking collisions?
+        can we let the user supply "my-plugin" while also checking the store for
+        e.g. "My-Plugin", "my_plugin", "my-plugin.nvim"...
 - [ ] figure out how to play nicely with mason
+- [ ] see if there's a way to improve plugin name display in the lazy dashboard (i.e. plugin name, not full nix store path)
 
 ## Configuration
 
