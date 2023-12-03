@@ -145,6 +145,26 @@ To provide nix store paths to the rest of the plugins in your configuration, upd
 }
 ```
 
+Don't forget to update each plugin's dependencies as well
+
+```Lua
+{
+  repo/my-cool-plugin.nvim,
+  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin"),
+  dependencies = {
+    {
+      repo/my-cool-plugins-dep.nvim,
+      dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugins-dep"),
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+The `get_plugin_path` function is case sensitive as well as sensitive to the difference between `-` and `_`. Be careful that you are matching the convention used by each plugin as you configure its `get_plugin_path` call.
+
 ### Mason
 
 TODO: figure out how to play nicely with Mason included in the configuration and add instructions here.
