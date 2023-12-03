@@ -76,7 +76,7 @@ function M.list_discovered_plugins()
 end
 
 function M.lazypath()
-  return M.get_plugin_path("lazy") or Config.options.lazypath
+  return M.get_plugin_path("lazy.nvim") or Config.options.lazypath
 end
 
 
