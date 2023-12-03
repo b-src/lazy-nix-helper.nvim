@@ -6,6 +6,8 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     name: pandoc to vimdoc
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
       - uses: kdheepak/panvimdoc@main
@@ -14,4 +16,7 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Auto generate docs"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           branch: ${{ github.head_ref }}
