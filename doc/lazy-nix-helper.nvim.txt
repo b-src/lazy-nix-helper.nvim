@@ -220,7 +220,8 @@ Don’t forget to update each plugin’s dependencies as well
 
 The `get_plugin_path` function is case sensitive as well as sensitive to the
 difference between `-` and `_`. Be careful that you are matching the convention
-used by each plugin as you configure its `get_plugin_path` call.
+used by each plugin as you configure its `get_plugin_path` call. Some plugins
+will also require ".nvim" to be appended to the plugin name.
 
 
 MASON ~
