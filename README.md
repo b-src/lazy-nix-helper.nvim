@@ -182,6 +182,8 @@ TODO: figure out how to play nicely with Mason included in the configuration and
 
 Lazy-Nix-Helper can't currently find plugins installed by Nix on non-NixOS platforms.
 
+Currently only plugins in the `vimplugin` or `lua5.1` package groups are found. That includes all the plugins that I use, but I think there are other package groups where neovim plugins can exist.
+
 ## Troubleshooting
 
 ### How do I check which path a plugin is loaded from?
