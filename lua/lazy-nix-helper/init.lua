@@ -8,11 +8,11 @@ function M.setup(options)
 end
 
 function M.get_plugin_path(plugin_name)
-  Core.get_plugin_path(plugin_name)
+  return Core.get_plugin_path(plugin_name)
 end
 
 function M.lazypath()
-  Core.lazypath()
+  return Core.lazypath()
 end
 
 function M.list_discovered_plugins()

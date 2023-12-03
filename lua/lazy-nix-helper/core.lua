@@ -98,5 +98,4 @@ function M.list_discovered_plugins()
   vim.print(plugins)
 end
 
-
 return M
