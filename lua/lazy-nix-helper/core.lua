@@ -6,11 +6,6 @@ local M = {}
 local plugin_discovery_done = false
 local plugins = {}
 
--- TODO: should this be checking nix-store is installed instead?
-local function nix_is_installed()
-  return vim.fn.executable("nix")
-end
-
 local function parse_plugin_name_from_nix_store_path(path, capture_group)
   -- path looks like:
   -- /nix/store/<hash>-vimplugin-<name>[-<date>]
@@ -68,7 +63,7 @@ local function populate_plugin_table_lua5_1()
 end
 
 local function populate_plugin_table()
-  if nix_is_installed then
+  if Util.in_a_nix_environment() then
     populate_plugin_table_vimplugins()
     populate_plugin_table_lua5_1()
   end
