@@ -64,6 +64,10 @@ function M.get_plugin_path(plugin_name)
   return plugins[plugin_name]
 end
 
+function M.list_discovered_plugins()
+  vim.print(plugins)
+end
+
 function M.lazypath()
   return M.get_plugin_path("lazy") or Config.options.lazypath
 end

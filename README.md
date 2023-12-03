@@ -175,7 +175,14 @@ Lazy-Nix-Helper can't currently find plugins installed by Nix on non-NixOS platf
 
 ## Troubleshooting
 
-TODO: function to show plugins found by Lazy-Nix-Helper?
-TODO: instructions for debug logging?
-TODO: health check?
+### How do I check which path a plugin is loaded from?
 
+Use the `:Lazy` command to open the Lazy dashboard. The source directory is listed for each plugin
+
+### How do I check which path Lazy-Nix-Helper has found for a plugin?
+
+Run the `get_plugin_path` function manually: `:lua print(require("lazy-nix-helper").get_plugin_path("<plugin-name>"))`
+
+### How do I check all of the plugins that Lazy-Nix-Helper has found?
+
+Run the `list_discovered_plugins` function manually: `lua require("lazy-nix-helper").list_discovered_plugins()`
