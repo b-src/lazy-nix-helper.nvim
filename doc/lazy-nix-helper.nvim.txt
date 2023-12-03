@@ -1,4 +1,4 @@
-*lazy-nix-helper.nvim.txt*    For NVIM v0.8.0    Last change: 2023 December 03
+*lazy-nix-helper.nvim.txt*  For Neovim >= 0.8.0? Last change: 2023 December 03
 
 ==============================================================================
 Table of Contents                     *lazy-nix-helper.nvim-table-of-contents*
@@ -8,7 +8,8 @@ Table of Contents                     *lazy-nix-helper.nvim-table-of-contents*
   - Compromise               |lazy-nix-helper.nvim-lazy-nix-helper-compromise|
   - How it works           |lazy-nix-helper.nvim-lazy-nix-helper-how-it-works|
   - Requirements           |lazy-nix-helper.nvim-lazy-nix-helper-requirements|
-  - Configuration and Installation|lazy-nix-helper.nvim-lazy-nix-helper-configuration-and-installation|
+  - Installation           |lazy-nix-helper.nvim-lazy-nix-helper-installation|
+  - Configuration         |lazy-nix-helper.nvim-lazy-nix-helper-configuration|
   - Known Limitations |lazy-nix-helper.nvim-lazy-nix-helper-known-limitations|
   - Troubleshooting     |lazy-nix-helper.nvim-lazy-nix-helper-troubleshooting|
 
@@ -63,26 +64,42 @@ TODO: - compatible neovim versions? - nixos compatibility? - dependencies? -
 neovim io.popen() not available on all platforms
 
 
-CONFIGURATION AND INSTALLATION*lazy-nix-helper.nvim-lazy-nix-helper-configuration-and-installation*
+INSTALLATION               *lazy-nix-helper.nvim-lazy-nix-helper-installation*
+
+
+NIXOS ~
+
+I haven’t packaged Lazy-Nix-Helper on NixOS yet, so for now you’ll have to
+write your own derivation.
+
+
+OTHER PLATFORMS ~
+
+The configuration instructions below include code that will install
+Lazy-Nix-Helper from GitHub when the given nix store path for Lazy-Nix-Helper
+does not exist.
+
+
+CONFIGURATION             *lazy-nix-helper.nvim-lazy-nix-helper-configuration*
 
 
 LAZY-NIX-HELPER CONFIGURATION ~
 
-**Bootstrapping Lazy Nix Helper’s Nix Store Path**
+**Lazy-Nix-Helper’s own Nix Store Path**
 
-The nix store path for the Lazy-Nix-Helper plugin itself must be bootstrapped.
-We can’t rely on the built in functionality to find the nix store path
-because the plugin hasn’t been loaded yet, and the plugin can’t be loaded
-without its nix store path, etc.
+The nix store path for the Lazy-Nix-Helper plugin itself cannot be provided by
+Lazy-Nix-Helper. We can’t rely on the built in functionality to find the nix
+store path because the plugin hasn’t been loaded yet, and the plugin can’t
+be loaded without its nix store path, etc.
 
-The config instructions below have you manually set the nix store path for lazy
-nix helper in your config. This is a pain and will break every time you update
-Lazy Nix Helper.
+The config instructions below have you manually set the nix store path for
+Lazy-Nix-Helper in your config. This is a pain and will break every time you
+update Lazy-Nix-Helper.
 
-**Loading Before Lazy **
+**Loading Before Lazy**
 
 Because Lazy will resolve plugin configurations before loading any plugins, we
-must load lazy nix helper manually before loading lazy.
+must load Lazy-Nix-Helper manually before loading lazy.
 
 **Updating init.lua**
 
@@ -116,14 +133,14 @@ The Lazy README recommends adding the following to your `init.lua`:
     require("lazy").setup(plugins, opts)
 <
 
-To update this configuration to work with Lazy Nix Helper, we will: - bootstrap
-Lazy Nix Helper - add Lazy Nix Helper to the vim runtime - call the Lazy Nix
-Helper `setup()` function - set the lazypath using Lazy Nix Helper
+To update this configuration to work with Lazy-Nix-Helper, we will: - bootstrap
+Lazy-Nix-Helper - add Lazy-Nix-Helper to the vim runtime - call the
+Lazy-Nix-Helper `setup()` function - set the lazypath using Lazy-Nix-Helper
 
 Update the configuration as follows:
 
 >lua
-    -- manually set this to your nix store path for lazy nix helper. TODO: improve
+    -- manually set this to your nix store path for lazy-nix-helper. TODO: improve
     local lazy_nix_helper_path = <lazy_nix_helper/nix/store/path>
     -- if we are not on a nix-based system, bootstrap lazy_nix_helper in the same way lazy is bootstrapped
     if not vim.loop.fs_stat(lazy_nix_helper_path) then
@@ -139,14 +156,14 @@ Update the configuration as follows:
       end
     end
     
-    -- add the Lazy Nix Helper plugin to the vim runtime
+    -- add the Lazy-Nix-Helper plugin to the vim runtime
     vim.opt.rtp:prepend(lazy_nix_helper_path)
     
-    -- call the Lazy Nix Helper setup function. pass a default lazypath for non-nix systems as an argument
+    -- call the Lazy-Nix-Helper setup function. pass a default lazypath for non-nix systems as an argument
     local non_nix_lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     require("lazy-nix-helper").setup({ lazypath = non_nix_lazypath })
     
-    -- get the lazypath from Lazy Nix Helper
+    -- get the lazypath from Lazy-Nix-Helper
     local lazypath = require("lazy-nix-helper").lazypath()
     -- the rest of the configuration is unchanged
     if not vim.loop.fs_stat(lazypath) then
