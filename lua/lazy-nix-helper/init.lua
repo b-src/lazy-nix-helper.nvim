@@ -3,6 +3,7 @@ local Config = require("lazy-nix-helper.config")
 
 local M = {}
 
+local plugin_discovery_done = false
 local plugins = {}
 
 function M.setup(options)
@@ -55,6 +56,11 @@ local function table_contains(table, key)
 end
 
 function M.get_plugin_path(plugin_name)
+  if not plugin_discovery_done then
+    M.populate_plugin_table()
+    plugin_discovery_done = true
+  end
+
   if not plugin_name then
     Util.error("plugin_name not provided")
   end
