@@ -10,10 +10,6 @@ function M.setup(options)
   require("lazy-nix-helper.config").setup(options)
 end
 
-local function table_contains(table, key)
-  return table[key] ~= nil
-end
-
 -- TODO: should this be checking nix-store is installed instead?
 local function nix_is_installed()
   return vim.fn.executable("nix")
@@ -55,7 +51,7 @@ local function populate_plugin_table_vimplugins()
   for line in nix_search_results do
     local plugin_path = line
     local plugin_name = parse_plugin_name_from_nix_store_path(line, capture_group)
-    if table_contains(plugins, plugin_name) then
+    if Util.table_contains(plugins, plugin_name) then
       Util.error("Plugin name collision detected for plugin name " .. plugin_name)
     end
     plugins[plugin_name] = plugin_path
@@ -68,7 +64,7 @@ local function populate_plugin_table_lua5_1()
   for line in nix_search_results do
     local plugin_path = line
     local plugin_name = parse_plugin_name_from_nix_store_path(line, capture_group)
-    if table_contains(plugins, plugin_name) then
+    if Util.table_contains(plugins, plugin_name) then
       Util.error("Plugin name collision detected for plugin name " .. plugin_name)
     end
     plugins[plugin_name] = plugin_path
@@ -92,7 +88,7 @@ function M.get_plugin_path(plugin_name)
     Util.error("plugin_name not provided")
   end
   -- TODO: is this check necessary?
-  if not table_contains(plugins, plugin_name) then
+  if not Util.table_contains(plugins, plugin_name) then
     return nil
   end
   return plugins[plugin_name]
