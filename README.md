@@ -1,14 +1,15 @@
 # Lazy-Nix-Helper
 
-A neovim plugin allowing a single neovim configuration with the Lazy plugin manager to be used on NixOS and other platforms. This plugin provides:
+A neovim plugin allowing a single neovim configuration with the Lazy plugin manager to be used on NixOS and other platforms. This plugin makes the following arrangement possible:
 
  - On NixOS:
-   + plugins(/LSP servers/DAPs/linters/formatters?) installed via Nix
+   + plugins (and LSP servers/DAP servers/linters/formatters) installed via Nix
    + configuration of plugins via Lazy
    + lazy loading of plugins via Lazy
  - On other platforms:
    + the same neovim configuration files you use on NixOS
-   + plugins(/LSP servers/DAPs/linters/formatters?) installed via Lazy(/Mason?) as normal
+   + plugins installed via Lazy installed via Lazy as normal
+   + LSP servers/DAP servers/linters/formatters installed via Mason as normal
    + configuration via Lazy as normal
    + lazy loading of plugins via Lazy as normal
 
@@ -176,7 +177,37 @@ The `get_plugin_path` function is case sensitive as well as sensitive to the dif
 
 ### Mason
 
-TODO: figure out how to play nicely with Mason included in the configuration and add instructions here.
+Mason is a package manager for LSP servers, DAP servers, linters, and formatters. Just like plugin management with Lazy, this conflicts with Nix. The easiest way to keep mason in your config on non-Nix platforms while disabling it on NixOS is to use the provided `mason_enabled` function to conditionally enable Mason.
+
+This will require you to separately declare all your LSP servers etc. in your NixOS config, but you were doing that already, right?
+
+Here's an example mason configuration as a dependency of `nvim-lspconfig`. Notice that we are using `mason_enabled` to conditionally enable both `mason` and `mason-lspconfig
+
+```Lua
+{
+  "neovim/nvim-lspconfig",
+  dir = require("lazy-nix-helper").get_plugin_path("nvim-lspconfig"),
+  dependencies = {
+    {
+      "williamboman/mason.nvim",
+      dir = require("lazy-nix-helper").get_plugin_path("mason.nvim"),
+      enable = require("lazy-nix-helper").mason_enabled(),
+      ...
+    },
+    {
+      "williamboman/mason-lspconfig.nvim",
+      dir = require("lazy-nix-helper").get_plugin_path("mason-lspconfig.nvim"),
+      enable = require("lazy-nix-helper").mason_enabled(),
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+TODO: do we have to load these things by hand now or is it sufficient to have them installed on the system?
+
 
 ## Known Limitations
 
