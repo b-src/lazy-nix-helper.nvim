@@ -28,6 +28,8 @@ Lazy-Nix-Helper searches the nix store for all installed vim plugins and builds 
 
 ## Requirements
 
+Note: the docs list neovim version >= 0.9.0 as a requirement. It will probably work for much earlier versions, but that's all I've tested it on so far.
+
 TODO: 
  - compatible neovim versions?
  - nixos compatibility? 
@@ -181,7 +183,13 @@ Mason is a package manager for LSP servers, DAP servers, linters, and formatters
 
 This will require you to separately declare all your LSP servers etc. in your NixOS config, but you were doing that already, right?
 
-Here's an example mason configuration as a dependency of `nvim-lspconfig`. Notice that we are using `mason_enabled` to conditionally enable both `mason` and `mason-lspconfig
+There are two parts to this:
+ 1. disabling the `mason` (and `mason-lspconfig`) plugins
+ 2. checking that `mason` (and `mason-lspconfig`) are enabled before they are used elsewhere in your config
+
+**Conditionally enabling mason**
+
+Here's an example mason configuration as a dependency of `nvim-lspconfig`. Notice that we are using `mason_enabled` to conditionally enable both `mason` and `mason-lspconfig`
 
 ```Lua
 {
@@ -190,13 +198,11 @@ Here's an example mason configuration as a dependency of `nvim-lspconfig`. Notic
   dependencies = {
     {
       "williamboman/mason.nvim",
-      dir = require("lazy-nix-helper").get_plugin_path("mason.nvim"),
       enable = require("lazy-nix-helper").mason_enabled(),
       ...
     },
     {
       "williamboman/mason-lspconfig.nvim",
-      dir = require("lazy-nix-helper").get_plugin_path("mason-lspconfig.nvim"),
       enable = require("lazy-nix-helper").mason_enabled(),
       ...
     },
@@ -206,8 +212,24 @@ Here's an example mason configuration as a dependency of `nvim-lspconfig`. Notic
 }
 ```
 
-TODO: do we have to load these things by hand now or is it sufficient to have them installed on the system?
+Note that specifying the `dir` parameter is not necessary here since these plugins will be disabled in NixOS. 
 
+**Conditionally calling mason**
+
+This part is harder to give examples for because there are a lot of ways you could be setting this up.
+
+I based my original neovim configuration on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/tree/master), which had checks that `mason` and `mason-lspconfig` were enabled already built again. This was before they migrated to using Lazy, and it looks like this has changed sense.
+
+Some general advice:
+
+ - You can still use the `mason_enabled()` function to gate `mason` or `mason-lspconfig` calls in your configuration
+ - Make sure that `lsp-config.setup()` function is still called for each server
+
+After making these changes in my own config LSP servers were working for me on NixOS.
+
+**Caveat for Linters and Formatters**
+
+In my own config I don't use linters or formatters provided by mason. I prefer to handle that on a per-project basis or use tools provided by the language. I haven't tested this plugin with a configuration that includes linters or formatters, and can't confirm that they work with this setup.
 
 ## Known Limitations
 
