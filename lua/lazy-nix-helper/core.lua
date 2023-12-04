@@ -63,7 +63,7 @@ local function populate_plugin_table_lua5_1()
 end
 
 local function populate_plugin_table()
-  if Util.in_a_nix_environment() then
+  if Util.in_a_nix_environment() and Util.nix_store_installed() then
     populate_plugin_table_vimplugins()
     populate_plugin_table_lua5_1()
   end
