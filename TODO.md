@@ -18,7 +18,7 @@
 - [x] instructions to bootstrap lazy-nix-helper
 - [x] instructions for updating existing plugin config
 - [ ] come up with a better way to provide lazy-nix-helper's own nix store path than manually supplying it
-- [ ] instructions for mason-compatible config
+- [x] instructions for mason-compatible config
 - [ ] determine lazy-nix-helper's requirements: neovim version, nixos version, etc.
 
 ## Installation
