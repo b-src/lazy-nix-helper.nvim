@@ -8,10 +8,17 @@ function M.table_contains(table, key)
   return table[key] ~= nil
 end
 
--- TODO: should this be checking nix-store is installed instead?
--- alternatively, should "in a nix environment" and "nix-store is installed" be separate ideas?
+-- use the presence of `nixos-rebuild` as a proxy for this being a nixOS system
 function M.in_a_nix_environment()
-  return vim.fn.executable("nix")
+  return vim.fn.executable("nixos-rebuild") == 1
+end
+
+function M.nix_store_installed()
+  return vim.fn.executable("nix-store") == 1
+end
+
+function M.print_environment_info()
+  print("In a nixOS environment: " .. tostring(M.in_a_nix_environment()) .. ". nix-store installed: " .. tostring(M.nix_store_installed()))
 end
 
 return M
