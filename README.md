@@ -228,3 +228,11 @@ Run the `get_plugin_path` function manually: `:lua print(require("lazy-nix-helpe
 ### How do I check all of the plugins that Lazy-Nix-Helper has found?
 
 Run the `list_discovered_plugins` function manually: `lua require("lazy-nix-helper").list_discovered_plugins()`
+
+### I don't think Lazy-Nix-Helper is correctly detecting when I'm on NixOS
+
+Run the `print_environment_info`  function manually to see:
+ - if Lazy-Nix-Helper thinks you're on NixOS or not
+ - if Lazy-Nix-Helper thinks nix-store is installed or not
+
+`lua require("lazy-nix-helper").print_environment_info()`
