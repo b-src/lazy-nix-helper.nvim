@@ -27,4 +27,11 @@
 
 ## Meta
 
-- [ ] write some tests
+- [x] write some tests
+- [ ] provide script to run all tests locally
+- [ ] run tests in CI
+- [ ] add auto formatting
+- [ ] add formatting check to CI
+- [ ] add linting
+- [ ] add linting to CI
+
