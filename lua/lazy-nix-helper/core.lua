@@ -3,8 +3,9 @@ local Util = require("lazy-nix-helper.util")
 
 local M = {}
 
-local plugin_discovery_done = false
-local plugins = {}
+-- Would prefer these to be local variables but making them part of the module makes testing easier
+M.plugin_discovery_done = false
+M.plugins = {}
 
 local function parse_plugin_name_from_nix_store_path(path, capture_group)
   -- path looks like:
@@ -42,10 +43,10 @@ local function populate_plugin_table_vimplugins()
   for line in nix_search_results do
     local plugin_path = line
     local plugin_name = parse_plugin_name_from_nix_store_path(line, capture_group)
-    if Util.table_contains(plugins, plugin_name) then
+    if Util.table_contains(M.plugins, plugin_name) then
       Util.error("Plugin name collision detected for plugin name " .. plugin_name)
     end
-    plugins[plugin_name] = plugin_path
+    M.plugins[plugin_name] = plugin_path
   end
 end
 
@@ -55,10 +56,10 @@ local function populate_plugin_table_lua5_1()
   for line in nix_search_results do
     local plugin_path = line
     local plugin_name = parse_plugin_name_from_nix_store_path(line, capture_group)
-    if Util.table_contains(plugins, plugin_name) then
+    if Util.table_contains(M.plugins, plugin_name) then
       Util.error("Plugin name collision detected for plugin name " .. plugin_name)
     end
-    plugins[plugin_name] = plugin_path
+    M.plugins[plugin_name] = plugin_path
   end
 end
 
@@ -70,19 +71,19 @@ local function populate_plugin_table()
 end
 
 function M.get_plugin_path(plugin_name)
-  if not plugin_discovery_done then
+  if not M.plugin_discovery_done then
     populate_plugin_table()
-    plugin_discovery_done = true
+    M.plugin_discovery_done = true
   end
 
   if not plugin_name then
     Util.error("plugin_name not provided")
   end
   -- TODO: is this check necessary?
-  if not Util.table_contains(plugins, plugin_name) then
+  if not Util.table_contains(M.plugins, plugin_name) then
     return nil
   end
-  return plugins[plugin_name]
+  return M.plugins[plugin_name]
 end
 
 function M.lazypath()
@@ -90,7 +91,7 @@ function M.lazypath()
 end
 
 function M.list_discovered_plugins()
-  vim.print(plugins)
+  vim.print(M.plugins)
 end
 
 return M
