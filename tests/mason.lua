@@ -3,8 +3,10 @@ local Mason = require("lazy-nix-helper.mason")
 local Util = require("lazy-nix-helper.util")
 
 local plenary_path = Core.get_plugin_path("plenary.nvim")
-print("plenary path: " .. plenary_path)
-vim.opt.rtp:prepend(plenary_path)
+-- if no plenary path found, assume we are on a non-nixos system and plenary is already available
+if plenary_path ~= nil then
+  vim.opt.rtp:prepend(plenary_path)
+end
 
 local plenary = require("plenary")
 local mock = require("luassert.mock")
