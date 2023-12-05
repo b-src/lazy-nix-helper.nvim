@@ -258,3 +258,13 @@ Run the `print_environment_info`  function manually to see:
  - if Lazy-Nix-Helper thinks nix-store is installed or not
 
 `lua require("lazy-nix-helper").print_environment_info()`
+
+## Development
+
+### Requirements
+
+Running the automated tests requires [Plenary](https://github.com/nvim-lua/plenary.nvim)
+
+### Running tests
+
+Open the test file and run `:PlenaryBustedFile tests/<test_file.lua>`
