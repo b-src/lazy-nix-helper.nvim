@@ -2,12 +2,14 @@ local Config = require("lazy-nix-helper.config")
 local Util = require("lazy-nix-helper.util")
 
 local M = {}
+M.vimplugin_capture_group = ".vimplugin%-(.*)"
+M.lua5_1_capture_group = ".lua5%.1%-(.*)"
 
--- Would prefer these to be local variables but making them part of the module makes testing easier
+-- would prefer these to be local variables but this makes testing easier
 M.plugin_discovery_done = false
 M.plugins = {}
 
-local function parse_plugin_name_from_nix_store_path(path, capture_group)
+function M.parse_plugin_name_from_nix_store_path(path, capture_group)
   -- path looks like:
   -- /nix/store/<hash>-vimplugin-<name>[-<date>]
   -- use string.match to capture everything after "vimplugin-"
@@ -37,37 +39,50 @@ local function search_nix_store_for_paths_containing_string(query_string)
   end
 end
 
-local function populate_plugin_table_vimplugins()
-  local nix_search_results = search_nix_store_for_paths_containing_string("vimplugin")
-  local capture_group = ".vimplugin%-(.*)"
+local function populate_plugin_table_base(grep_string, capture_group)
+  local plugin_table = {}
+
+  local nix_search_results = search_nix_store_for_paths_containing_string(grep_string)
   for line in nix_search_results do
     local plugin_path = line
-    local plugin_name = parse_plugin_name_from_nix_store_path(line, capture_group)
-    if Util.table_contains(M.plugins, plugin_name) then
+    local plugin_name = M.parse_plugin_name_from_nix_store_path(line, capture_group)
+
+    if Util.table_contains(plugin_table, plugin_name) then
       Util.error("Plugin name collision detected for plugin name " .. plugin_name)
     end
-    M.plugins[plugin_name] = plugin_path
+
+    plugin_table[plugin_name] = plugin_path
   end
+
+  return plugin_table
+end
+
+local function populate_plugin_table_vimplugins()
+  return populate_plugin_table_base("vimplugin", M.vimplugin_capture_group)
 end
 
 local function populate_plugin_table_lua5_1()
-  local nix_search_results = search_nix_store_for_paths_containing_string("lua5.1")
-  local capture_group = ".lua5%.1%-(.*)"
-  for line in nix_search_results do
-    local plugin_path = line
-    local plugin_name = parse_plugin_name_from_nix_store_path(line, capture_group)
-    if Util.table_contains(M.plugins, plugin_name) then
-      Util.error("Plugin name collision detected for plugin name " .. plugin_name)
-    end
-    M.plugins[plugin_name] = plugin_path
+  return populate_plugin_table_base("lua5.1", M.lua5_1_capture_group)
+end
+
+function M.build_plugin_table()
+  local plugin_table = {}
+
+  if Util.in_a_nix_environment() and Util.nix_store_installed() then
+    local vimplugins_table = populate_plugin_table_vimplugins()
+    local lua5_1_table = populate_plugin_table_lua5_1()
+
+    plugin_table = vim.tbl_extend("error", plugin_table, vimplugins_table)
+    plugin_table = vim.tbl_extend("error", plugin_table, lua5_1_table)
   end
+
+  return plugin_table
 end
 
 local function populate_plugin_table()
-  if Util.in_a_nix_environment() and Util.nix_store_installed() then
-    populate_plugin_table_vimplugins()
-    populate_plugin_table_lua5_1()
-  end
+  -- TODO: is extending the table better than just setting it? does it matter?
+  -- vim.tbl.extend("force", M.plugins, M.build_plugin_table())
+  M.plugins = M.build_plugin_table()
 end
 
 function M.get_plugin_path(plugin_name)
