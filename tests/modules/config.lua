@@ -1,8 +1,6 @@
 local Config = require("lazy-nix-helper.config")
 local Util = require("lazy-nix-helper.util")
 
-require("tests.init").setup_test_env()
-
 local plenary = require("plenary")
 local mock = require("luassert.mock")
 local assert = require("luassert.assert")
