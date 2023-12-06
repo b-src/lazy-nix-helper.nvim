@@ -1,21 +1,22 @@
-local Core = require("lazy-nix-helper.core")
-
 M = {}
 
-local setup_complete = false
-
 function M.setup_test_env()
-  if not setup_complete then
-    local plenary_path = Core.get_plugin_path("plenary.nvim")
-    -- if no plenary path found, assume we are on a non-nixos system and plenary is already available
-    if plenary_path ~= nil then
-      vim.opt.rtp:prepend(plenary_path)
-    end
+  local file_path = debug.getinfo(1, "S").source:sub(2)
+  local lazy_nix_helper_absolute_path = string.match(file_path, "(.*).tests/init%.lua")
 
-    setup_complete = true
+  vim.opt.rtp:prepend(lazy_nix_helper_absolute_path)
+
+  local non_nix_lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  require("lazy-nix-helper").setup({ lazypath = non_nix_lazypath })
+
+
+  local plenary_path = require("lazy-nix-helper").get_plugin_path("plenary.nvim")
+  -- TODO: can't assume plenary will be available here or at all
+  if plenary_path == nil then
+    plenary_path = vim.fn.stdpath("data") .. "/lazy/plenary.nvim"
   end
+  vim.opt.rtp:prepend(plenary_path)
 end
 
-return M
-
+M.setup_test_env()
 
