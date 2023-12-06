@@ -1,13 +1,6 @@
 local Core = require("lazy-nix-helper.core")
 local Config = require("lazy-nix-helper.config")
 
--- require("tests.init").setup_test_env()
-local plenary_path = Core.get_plugin_path("plenary.nvim")
--- if no plenary path found, assume we are on a non-nixos system and plenary is already available
-if plenary_path ~= nil then
-  vim.opt.rtp:prepend(plenary_path)
-end
-
 local plenary = require("plenary")
 local assert = require("luassert.assert")
 
