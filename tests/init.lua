@@ -10,7 +10,7 @@ end
 local function install_deps()
   local repo_root = repo_path()
   local dependency_root = repo_root .. "test_dependencies/"
-  local plenary_path = dependency_root .. "plenary/"
+  local plenary_path = dependency_root .. "plenary"
 
   vim.fn.mkdir(dependency_root, "p")
   vim.fn.system({ "git", "clone", "--depth=1", "https://github.com/nvim-lua/plenary.nvim.git", plenary_path })
