@@ -1,15 +1,23 @@
-name: panvimdoc
+name: ci
 
 on: [push, pull_request]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: test
+        run: |
+          make test
+
   docs:
     runs-on: ubuntu-latest
     name: pandoc to vimdoc
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - uses: kdheepak/panvimdoc@main
         with:
           vimdoc: lazy-nix-helper.nvim
