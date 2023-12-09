@@ -13,9 +13,12 @@ jobs:
           curl -sL "https://github.com/neovim/neovim/releases/download/v0.9.1/nvim-linux64.tar.gz" | tar xzf - --strip-components=1 -C "${PWD}/neovim"
       - name: test
         run: |
+          export PATH="${PWD}/neovim/bin:${PATH}"
+          export VIM="${PWD}/neovim/share/nvim/runtime"
           make test
 
   docs:
+    needs: test
     runs-on: ubuntu-latest
     name: pandoc to vimdoc
     permissions:
