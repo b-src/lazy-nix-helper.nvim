@@ -16,7 +16,7 @@ A neovim plugin allowing a single neovim configuration with the Lazy plugin mana
 
 ## Motivation
 
-When I switched to NixOS I had an existing neovim configuration using the Lazy plugin manager. Home Manager in NixOS provides it's own way to manage installation and configuration of neovim plugins, but migrating would be a heavy lift. If I could run NixOS everywhere, I would probably have spent the effort to migrate. I'm not so lucky, so this plugin was created to let me have a portable neovim config that works nicely on and off NixOS.
+When I switched to NixOS I had an existing neovim configuration using the Lazy plugin manager. Home-Manager for NixOS provides it's own way to manage installation and configuration of neovim plugins, but migrating would be a heavy lift. If I could run NixOS everywhere, I would probably have spent the effort to migrate. I'm not so lucky, so this plugin was created to let me have a portable neovim config that works nicely on and off NixOS.
 
 ## Compromise
 
@@ -40,7 +40,8 @@ TODO:
 
 ### NixOS
 
-I haven't packaged Lazy-Nix-Helper on NixOS yet, so for now you'll have to write your own derivation.
+I haven't packaged Lazy-Nix-Helper on NixOS yet, so for now you'll have to package it in your config manually. An example is shown in the NixOS Configuration section below. Additional info can be found here:
+https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/vim.section.md#what-if-your-favourite-vim-plugin-isnt-already-packaged-what-if-your-favourite-vim-plugin-isnt-already-packaged
 
 ### Other Platforms
 
@@ -54,7 +55,7 @@ The configuration instructions below include code that will install Lazy-Nix-Hel
 
 The nix store path for the Lazy-Nix-Helper plugin itself cannot be provided by Lazy-Nix-Helper. We can't rely on the built in functionality to find the nix store path because the plugin hasn't been loaded yet, and the plugin can't be loaded without its nix store path, etc.
 
-The config instructions below have you manually set the nix store path for Lazy-Nix-Helper in your config. This is a pain and will break every time you update Lazy-Nix-Helper.
+The recommended way to deal with this is to move your `init.lua` configuration into `programs.neovim.extraLuaConfig`. Then the nix-store path of Lazy-Nix-Helper can be provided with a variable. See the NixOS Configuration section for more details.
 
 **Loading Before Lazy**
 
@@ -99,7 +100,7 @@ To update this configuration to work with Lazy-Nix-Helper, we will:
 
 Update the configuration as follows:
 ```Lua
--- manually set this to your nix store path for lazy-nix-helper. TODO: improve
+-- See the NixOS Configuration section for more details
 local lazy_nix_helper_path = <lazy_nix_helper/nix/store/path>
 -- if we are not on a nix-based system, bootstrap lazy_nix_helper in the same way lazy is bootstrapped
 if not vim.loop.fs_stat(lazy_nix_helper_path) then
@@ -230,6 +231,97 @@ After making these changes in my own config LSP servers were working for me on N
 **Caveat for Linters and Formatters**
 
 In my own config I don't use linters or formatters provided by mason. I prefer to handle that on a per-project basis or use tools provided by the language. I haven't tested this plugin with a configuration that includes linters or formatters, and can't confirm that they work with this setup.
+
+## NixOS Configuration
+
+There are a lot of different ways you might set up your NixOS configuration. This section will give configuration examples using home-manager. You may need to adapt this to fit your own system configuration.
+
+The necessary components are:
+ 1. Package lazy-nix-helper yourself. See these instructions for additional information
+      https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/vim.section.md#what-if-your-favourite-vim-plugin-isnt-already-packaged-what-if-your-favourite-vim-plugin-isnt-already-packaged
+ 2. Put your existing `init.lua` within `programs.neovim.extraLuaConfig`.
+ 3. Update your `init.lua` to provide the nix store path of Lazy-Nix-Helper
+ 4. Include the rest of your config files with `xdg.configFile`.
+
+`neovim.nix` module:
+```Nix
+{ pkgs, config, ... }:
+
+let
+  lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "lazy-nix-helper.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "b-src";
+      repo = "lazy-nix-helper.nvim";
+      rev = "<git commit hash>";
+      hash = "<sha256 of archive of git commit>";
+    };
+  };
+
+in
+  {
+    xdg.configFile."nvim/lua" = {
+      source = ./neovim_config/lua;
+      recursive = true;
+    };
+
+    programs.neovim = {
+      enable = true;
+      ...
+      extraPackages = with pkgs; [
+        <lsps, etc.>
+      ];
+      plugins = with pkgs.vimPlugins; [
+          lazy-nix-helper-nvim
+          lazy-nvim
+          <other plugins>
+      ];
+      extraLuaConfig = ''
+        local lazy_nix_helper_path = "${lazy-nix-helper-nvim}"
+        if not vim.loop.fs_stat(lazy_nix_helper_path) then
+          lazy_nix_helper_path = vim.fn.stdpath("data") .. "/lazy_nix_helper/lazy_nix_helper.nvim"
+          if not vim.loop.fs_stat(lazy_nix_helper_path) then
+            vim.fn.system({
+              "git",
+              "clone",
+              "--filter=blob:none",
+              "https://github.com/b-src/lazy_nix_helper.nvim.git",
+              lazy_nix_helper_path,
+            })
+          end
+        end
+
+        -- add the Lazy Nix Helper plugin to the vim runtime
+        vim.opt.rtp:prepend(lazy_nix_helper_path)
+
+        -- call the Lazy Nix Helper setup function. pass a default lazypath for non-nix systems as an argument
+        local non_nix_lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+        local lazy_nix_helper_opts = { lazypath = non_nix_lazypath }
+        require("lazy-nix-helper").setup(lazy_nix_helper_opts)
+
+        -- get the lazypath from Lazy Nix Helper
+        local lazypath = require("lazy-nix-helper").lazypath()
+        if not vim.loop.fs_stat(lazypath) then
+          vim.fn.system({
+            "git",
+            "clone",
+            "--filter=blob:none",
+            "https://github.com/folke/lazy.nvim.git",
+            "--branch=stable", -- latest stable release
+            lazypath,
+          })
+        end
+        vim.opt.rtp:prepend(lazypath)
+
+        <additional config in init.lua>
+      '';
+    };
+  }
+```
+
+### A Note on dotfiles
+
+After moving your `init.lua` directly into your NixOS config and sourcing the rest of your dotfiles within your NixOS config, you should use the built output in `~/.config/nvim` as the source for sharing your dotfiles with a non-NixOS system.
 
 ## Known Limitations
 
