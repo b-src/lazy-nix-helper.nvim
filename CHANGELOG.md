@@ -10,6 +10,7 @@
 ### Meta
 
 - Add tests for existing features
+- Add makefile target to run test suite
 
 
 ## [0.1.0] - 2023-12-03

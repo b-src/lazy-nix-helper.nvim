@@ -359,4 +359,4 @@ Running the automated tests requires [Plenary](https://github.com/nvim-lua/plena
 
 ### Running tests
 
-Open the test file and run `:PlenaryBustedFile %`
+From the repo root, run `make test` to run the full suite of tests.
