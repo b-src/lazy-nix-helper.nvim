@@ -12,6 +12,8 @@
 - Add tests for existing features
 - Add makefile target to run test suite
 - Run tests in CI
+- Add linting and auto-formatting
+- Add linting and formatting checks to CI
 
 
 ## [0.1.0] - 2023-12-03
