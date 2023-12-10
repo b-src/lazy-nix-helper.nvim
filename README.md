@@ -357,6 +357,20 @@ Run the `print_environment_info`  function manually to see:
 
 Running the automated tests requires [Plenary](https://github.com/nvim-lua/plenary.nvim)
 
+The test setup script will automatically download plenary into the `test_dependencies` directory
+
 ### Running tests
 
 From the repo root, run `make test` to run the full suite of tests.
+
+### Linting and auto-formatting
+
+Linting requires [Luacheck](https://github.com/mpeterv/luacheck)
+
+Auto-formatting requires [Stylua](https://github.com/JohnnyMorganz/StyLua)
+
+`make lint` will run both auto-formatting and linting.
+
+`make format` will run only auto-formatting.
+
+`make check` will run only linting.
