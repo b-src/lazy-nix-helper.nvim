@@ -47,9 +47,10 @@ plenary.busted.describe("test get_plugin_path", function()
       -- would prefer to mock Core.build_plugin_table to return the expected test plugin table,
       -- but can't get that to work at the moment
       local orig_plugins = Core.plugins
+      Core.plugin_discovery_done = true
       Core.plugins = test[2]
-      assert(Core.plugin_discovery_done)
 
+      assert(Core.plugin_discovery_done)
       assert.equals(test[4], Core.get_plugin_path(test[3]))
 
       Core.plugins = orig_plugins

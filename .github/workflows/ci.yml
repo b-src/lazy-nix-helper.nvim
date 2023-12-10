@@ -1,15 +1,30 @@
-name: panvimdoc
+name: ci
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install neovim
+        run: |
+          mkdir -p neovim
+          curl -sL "https://github.com/neovim/neovim/releases/download/v0.9.1/nvim-linux64.tar.gz" | tar xzf - --strip-components=1 -C "${PWD}/neovim"
+      - name: test
+        run: |
+          export PATH="${PWD}/neovim/bin:${PATH}"
+          export VIM="${PWD}/neovim/share/nvim/runtime"
+          make test
+
   docs:
+    needs: test
     runs-on: ubuntu-latest
     name: pandoc to vimdoc
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: kdheepak/panvimdoc@main
         with:
           vimdoc: lazy-nix-helper.nvim

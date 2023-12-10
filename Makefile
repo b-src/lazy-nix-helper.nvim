@@ -11,18 +11,17 @@ clean:
 
 ##@ Test Targets
 
-# TODO: figure out why tests don't pass when run with PlenaryBustedDirectory here, but do pass when each file is run individually
-# .PHONY: test
-# test: ## Run automated tests
-# test:
-# 	nvim --headless -u tests/init.lua -c "PlenaryBustedDirectory tests { minimal_init = 'tests/init.lua'}"
-
 .PHONY: test
 test: ## Run automated tests
 test:
-	nvim --headless -u tests/init.lua -c "PlenaryBustedFile tests/modules/core_spec.lua"
-	nvim --headless -u tests/init.lua -c "PlenaryBustedFile tests/modules/config_spec.lua"
-	nvim --headless -u tests/init.lua -c "PlenaryBustedFile tests/modules/mason_spec.lua"
+	nvim --headless -u tests/init.lua -c "PlenaryBustedDirectory tests { minimal_init = 'tests/init.lua'}"
+
+# .PHONY: test
+# test: ## Run automated tests
+# test:
+# 	nvim --headless -u tests/init.lua -c "PlenaryBustedFile tests/modules/core_spec.lua"
+# 	nvim --headless -u tests/init.lua -c "PlenaryBustedFile tests/modules/config_spec.lua"
+# 	nvim --headless -u tests/init.lua -c "PlenaryBustedFile tests/modules/mason_spec.lua"
 
 
 ##@ Help Targets
