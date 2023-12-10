@@ -1,6 +1,6 @@
 name: ci
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   stylua:
@@ -15,6 +15,7 @@ jobs:
           args: --color always --check .
 
   luacheck:
+    needs: stylua
     name: luacheck
     runs-on: ubuntu-22.04
     steps:
@@ -28,7 +29,7 @@ jobs:
         run: make check
 
   test:
-    needs: stylua
+    needs: luacheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
