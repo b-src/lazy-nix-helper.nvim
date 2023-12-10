@@ -5,7 +5,6 @@ local plenary = require("plenary")
 local mock = require("luassert.mock")
 local assert = require("luassert.assert")
 
-
 plenary.busted.describe("test mason_enabled", function()
   local tests = {
     { true, false },

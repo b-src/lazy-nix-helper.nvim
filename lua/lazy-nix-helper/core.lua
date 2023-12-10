@@ -35,7 +35,7 @@ local function search_nix_store_for_paths_containing_string(query_string)
     -- "attempt to use a closed file"
     -- I'm not sure why that is.
     -- nix_search_handle:close()
-  return nix_search_results
+    return nix_search_results
   end
 end
 

@@ -18,7 +18,12 @@ function M.nix_store_installed()
 end
 
 function M.print_environment_info()
-  print("In a nixOS environment: " .. tostring(M.in_a_nix_environment()) .. ". nix-store installed: " .. tostring(M.nix_store_installed()))
+  print(
+    "In a nixOS environment: "
+      .. tostring(M.in_a_nix_environment())
+      .. ". nix-store installed: "
+      .. tostring(M.nix_store_installed())
+  )
 end
 
 return M

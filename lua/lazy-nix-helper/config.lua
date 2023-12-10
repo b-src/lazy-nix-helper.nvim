@@ -5,7 +5,7 @@ local M = {}
 M.namespace = vim.api.nvim_create_namespace("LazyNixHelper")
 
 local defaults = {
-  lazypath = nil
+  lazypath = nil,
 }
 
 M.options = {}

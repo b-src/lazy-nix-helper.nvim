@@ -5,16 +5,15 @@ local plenary = require("plenary")
 local mock = require("luassert.mock")
 local assert = require("luassert.assert")
 
-
 plenary.busted.describe("test setup", function()
   plenary.busted.it("throws an error if no lazypath provided", function()
-      local Util = mock(Util, true)
+    local Util = mock(Util, true)
 
-      Config.setup({})
+    Config.setup({})
 
-      assert.stub(Util.error).was_called_with("A default lazypath must be provided")
+    assert.stub(Util.error).was_called_with("A default lazypath must be provided")
 
-      mock.revert(Util)
+    mock.revert(Util)
   end)
 end)
 
