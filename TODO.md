@@ -29,7 +29,7 @@
 
 - [x] write some tests
 - [x] provide makefile target to run all tests locally
-- [ ] run tests in CI
+- [x] run tests in CI
 - [ ] add auto formatting
 - [ ] add formatting check to CI
 - [ ] add linting
