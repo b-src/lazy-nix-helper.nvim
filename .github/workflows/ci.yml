@@ -14,6 +14,19 @@ jobs:
           version: latest
           args: --color always --check .
 
+  luacheck:
+    name: luacheck
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: install luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luarocks
+          sudo luarocks install luacheck
+      - name: lint
+        run: make check
+
   test:
     needs: stylua
     runs-on: ubuntu-latest
