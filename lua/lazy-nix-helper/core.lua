@@ -29,12 +29,14 @@ local function search_nix_store_for_paths_containing_string(query_string)
   if nix_search_handle == nil then
     Util.error("Unable to get nix-store search results")
   else
-    local nix_search_results = nix_search_handle:lines()
-    -- TODO: this is needed, we don't want to leave dangling file handles for lua's GC to clean up
-    -- however, when this is included, attempting to use nix_search_results below gives an error:
-    -- "attempt to use a closed file"
-    -- I'm not sure why that is.
-    -- nix_search_handle:close()
+    -- this is needed because using file:lines() will return an interator, which means if we close the file
+    -- handle we can't use the results
+    local nix_search_results_text = nix_search_handle:read("*a")
+    -- TODO: this results in an empty string at the end of the table, which will break processing later
+    -- figure out if this happens every time.
+    -- prefer to just remove it here
+    local nix_search_results = vim.split(nix_search_results_text, "\n")
+    nix_search_handle:close()
     return nix_search_results
   end
 end
@@ -43,15 +45,17 @@ local function populate_plugin_table_base(grep_string, capture_group)
   local plugin_table = {}
 
   local nix_search_results = search_nix_store_for_paths_containing_string(grep_string)
-  for line in nix_search_results do
-    local plugin_path = line
-    local plugin_name = M.parse_plugin_name_from_nix_store_path(line, capture_group)
+  for _, line in ipairs(nix_search_results) do
+    if line ~= "" then
+      local plugin_path = line
+      local plugin_name = M.parse_plugin_name_from_nix_store_path(line, capture_group)
 
-    if Util.table_contains(plugin_table, plugin_name) then
-      Util.error("Plugin name collision detected for plugin name " .. plugin_name)
+      if Util.table_contains(plugin_table, plugin_name) then
+        Util.error("Plugin name collision detected for plugin name " .. plugin_name)
+      end
+
+      plugin_table[plugin_name] = plugin_path
     end
-
-    plugin_table[plugin_name] = plugin_path
   end
 
   return plugin_table
