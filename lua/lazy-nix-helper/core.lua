@@ -9,6 +9,12 @@ M.lua5_1_capture_group = ".lua5%.1%-(.*)"
 M.plugin_discovery_done = false
 M.plugins = {}
 
+local function normalize_plugin_name(plugin_name)
+  local plugin_name_lower = string.lower(plugin_name)
+  local plugin_name_separators = string.gsub(plugin_name_lower, "_", "-")
+  return plugin_name_separators
+end
+
 function M.parse_plugin_name_from_nix_store_path(path, capture_group)
   -- path looks like:
   -- /nix/store/<hash>-vimplugin-<name>[-<date>]
@@ -18,6 +24,9 @@ function M.parse_plugin_name_from_nix_store_path(path, capture_group)
   local plugin_name = string.match(plugin_name_with_possible_date, "(.-)%-%d%d%d%d%-%d%d%-%d%d$")
   if plugin_name == nil then
     plugin_name = plugin_name_with_possible_date
+  end
+  if Config.options.friendly_plugin_names then
+    plugin_name = normalize_plugin_name(plugin_name)
   end
   return plugin_name
 end
@@ -98,10 +107,34 @@ function M.get_plugin_path(plugin_name)
   if not plugin_name then
     Util.error("plugin_name not provided")
   end
+
+  local plugin_path = nil
+  if Config.options.friendly_plugin_names then
+
+    local norm_plugin_name = normalize_plugin_name(plugin_name)
+    local nvim_appended = norm_plugin_name .. ".nvim"
+    local nvim_removed = string.match(norm_plugin_name, "(.-)%.nvim$")
+
+    local candidate_plugin_paths = {}
+    candidate_plugin_paths["norm_plugin_name"] = M.plugins[norm_plugin_name]
+    candidate_plugin_paths["nvim_appended"] = M.plugins[nvim_appended]
+    if nvim_removed ~= nil then
+      candidate_plugin_paths["nvim_removed"] = M.plugins[nvim_removed]
+    end
+
+    local candidate_path = nil
+    for _, paths in pairs(candidate_plugin_paths) do
+
+    end
+
+
+  end
+
   -- TODO: is this check necessary?
   if not Util.table_contains(M.plugins, plugin_name) then
     return nil
   end
+
   return M.plugins[plugin_name]
 end
 
