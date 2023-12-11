@@ -1,4 +1,4 @@
-*lazy-nix-helper.nvim.txt*  For Neovim >= 0.9.0? Last change: 2023 December 10
+*lazy-nix-helper.nvim.txt*  For Neovim >= 0.9.0? Last change: 2023 December 11
 
 ==============================================================================
 Table of Contents                     *lazy-nix-helper.nvim-table-of-contents*
