@@ -3,6 +3,10 @@
 
 ## [Unreleased]
 
+### Fixes
+
+- Close dangling file handles previously left by nix store lookups
+
 ### Docs
 
 - Add NixOS config instructions
