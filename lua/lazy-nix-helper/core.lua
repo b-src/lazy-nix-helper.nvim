@@ -98,6 +98,40 @@ local function populate_plugin_table()
   M.plugins = M.build_plugin_table()
 end
 
+local function get_friendly_plugin_path(plugin_name)
+  local norm_plugin_name = normalize_plugin_name(plugin_name)
+  local nvim_appended = norm_plugin_name .. ".nvim"
+  local nvim_removed = string.match(norm_plugin_name, "(.-)%.nvim$")
+  -- would prefer to put all the candidate paths in an array and check that there aren't more than one
+  -- non-nil values. since iterating over an array in lua will stop at the first nil value, there doesn't
+  -- seem to be a great way to do this. try to refactor if another case is ever added
+  local norm_plugin_path = M.plugins[norm_plugin_name]
+  local nvim_appended_plugin_path = M.plugins[nvim_appended]
+  local nvim_removed_plugin_path = nil
+  if nvim_removed ~= nil then
+    nvim_removed_plugin_path = M.plugins[nvim_removed]
+  end
+
+  if not (norm_plugin_path or nvim_appended_plugin_path or nvim_removed_plugin_path) then
+    return nil
+  end
+
+  if not (Util.xor(Util.xor(norm_plugin_path, nvim_appended_plugin_path), nvim_removed_plugin_path)) then
+    Util.error("Name collision found when using friendly plugin discovery for " .. plugin_name)
+  end
+
+  -- at this point we know only one non-nil path was found
+  if norm_plugin_path ~= nil then
+    return norm_plugin_path
+  end
+  if nvim_appended_plugin_path ~= nil then
+    return nvim_appended_plugin_path
+  end
+  if nvim_removed_plugin_path ~= nil then
+    return nvim_removed_plugin_path
+  end
+end
+
 function M.get_plugin_path(plugin_name)
   if not M.plugin_discovery_done then
     populate_plugin_table()
@@ -108,31 +142,8 @@ function M.get_plugin_path(plugin_name)
     Util.error("plugin_name not provided")
   end
 
-  local plugin_path = nil
   if Config.options.friendly_plugin_names then
-
-    local norm_plugin_name = normalize_plugin_name(plugin_name)
-    local nvim_appended = norm_plugin_name .. ".nvim"
-    local nvim_removed = string.match(norm_plugin_name, "(.-)%.nvim$")
-
-    local candidate_plugin_paths = {}
-    candidate_plugin_paths["norm_plugin_name"] = M.plugins[norm_plugin_name]
-    candidate_plugin_paths["nvim_appended"] = M.plugins[nvim_appended]
-    if nvim_removed ~= nil then
-      candidate_plugin_paths["nvim_removed"] = M.plugins[nvim_removed]
-    end
-
-    local candidate_path = nil
-    for _, paths in pairs(candidate_plugin_paths) do
-
-    end
-
-
-  end
-
-  -- TODO: is this check necessary?
-  if not Util.table_contains(M.plugins, plugin_name) then
-    return nil
+    return get_friendly_plugin_path(plugin_name)
   end
 
   return M.plugins[plugin_name]

@@ -8,6 +8,10 @@ function M.table_contains(table, key)
   return table[key] ~= nil
 end
 
+function M.xor(a, b)
+  return (a or b) and not (a and b)
+end
+
 -- use the presence of `nixos-rebuild` as a proxy for this being a nixOS system
 function M.in_a_nix_environment()
   return vim.fn.executable("nixos-rebuild") == 1
