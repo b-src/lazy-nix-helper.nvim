@@ -3,6 +3,10 @@
 
 ## [Unreleased]
 
+### Features
+
+- Add config option for friendlier plugin name handling
+
 ### Fixes
 
 - Close dangling file handles previously left by nix store lookups

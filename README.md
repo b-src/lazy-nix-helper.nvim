@@ -51,6 +51,23 @@ The configuration instructions below include code that will install Lazy-Nix-Hel
 
 ### Lazy-Nix-Helper Configuration
 
+**Default Config**
+```Lua
+{
+  lazypath = nil,
+  friendly_plugin_names = true,
+}
+```
+
+**Config Options**
+ - `lazypath`: the default lazypath. Must be set in plugin config
+ - `friendly_plugin_names`: when set to `true` provides less-strict plugin name matching for get_plugin_path():
+   + not case sensitive
+   + treats `-` and `_` as identical
+   + add or subtracts `.nvim` from the plugin name as needed
+
+   in most cases setting this to true will make updating your configuration much easier. if there is a plugin name collision with these rules applied then lazy-nix-helper will thrown an error. in that case you will have to set this option to false and match plugin names exactly.
+
 **Lazy-Nix-Helper's own Nix Store Path**
 
 The nix store path for the Lazy-Nix-Helper plugin itself cannot be provided by Lazy-Nix-Helper. We can't rely on the built in functionality to find the nix store path because the plugin hasn't been loaded yet, and the plugin can't be loaded without its nix store path, etc.
@@ -163,10 +180,10 @@ Don't forget to update each plugin's dependencies as well
 ```Lua
 {
   repo/my-cool-plugin.nvim,
-  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin"),
+  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin.nvim"),
   dependencies = {
     {
-      repo/my-cool-plugins-dep.nvim,
+      repo/my-cool-plugins-dep,
       dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugins-dep"),
       ...
     },
@@ -175,8 +192,6 @@ Don't forget to update each plugin's dependencies as well
   ...
 }
 ```
-
-The `get_plugin_path` function is case sensitive as well as sensitive to the difference between `-` and `_`. Be careful that you are matching the convention used by each plugin as you configure its `get_plugin_path` call. Some plugins will also require ".nvim" to be appended to the plugin name.
 
 ### Mason
 
