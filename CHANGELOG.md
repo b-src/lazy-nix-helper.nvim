@@ -6,6 +6,7 @@
 ### Docs
 
 - Add note about plugin display names in the Lazy dashboard
+- Add section on alternative tools to the README
 
 
 ## [0.2.0] - 2023-12-26
