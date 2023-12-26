@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [Unreleased]
+
+### Docs
+
+- Add note about plugin display names in the Lazy dashboard
+
+
 ## [0.2.0] - 2023-12-26
 
 ### Features
