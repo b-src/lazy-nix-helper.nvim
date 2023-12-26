@@ -59,7 +59,13 @@ plenary.busted.describe("test get_plugin_path", function()
       "myplugin",
       expected_found_plugin_path,
     },
-    { "returns nil when plugin not found", { friendly_plugin_names = false }, { ["otherplugin"] = wrong_path }, "myplugin", nil },
+    {
+      "returns nil when plugin not found",
+      { friendly_plugin_names = false },
+      { ["otherplugin"] = wrong_path },
+      "myplugin",
+      nil,
+    },
     {
       "is case sensitive strict names plugin found",
       { friendly_plugin_names = false },
@@ -67,7 +73,13 @@ plenary.busted.describe("test get_plugin_path", function()
       "MyPlugin",
       expected_found_plugin_path,
     },
-    { "is case sensitive strict names plugin not found", { friendly_plugin_names = false }, { ["MyPlugin"] = expected_found_plugin_path }, "myplugin", nil },
+    {
+      "is case sensitive strict names plugin not found",
+      { friendly_plugin_names = false },
+      { ["MyPlugin"] = expected_found_plugin_path },
+      "myplugin",
+      nil,
+    },
     {
       "is not case sensitive friendly names plugin found",
       { friendly_plugin_names = true },
