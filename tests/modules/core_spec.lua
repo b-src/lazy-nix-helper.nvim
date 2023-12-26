@@ -47,50 +47,58 @@ plenary.busted.describe("test get_plugin_path", function()
   local tests = {
     {
       "returns path when plugin found",
+      { friendly_plugin_names = false },
       { ["myplugin"] = expected_found_plugin_path },
       "myplugin",
       expected_found_plugin_path,
     },
-    { "returns nil when plugin not found", { ["otherplugin"] = wrong_path }, "myplugin", nil },
+    { "returns nil when plugin not found", { friendly_plugin_names = false }, { ["otherplugin"] = wrong_path }, "myplugin", nil },
     {
       "is case sensitive plugin found",
+      { friendly_plugin_names = false },
       { ["MyPlugin"] = expected_found_plugin_path },
       "MyPlugin",
       expected_found_plugin_path,
     },
-    { "is case sensitive plugin not found", { ["MyPlugin"] = expected_found_plugin_path }, "myplugin", nil },
+    { "is case sensitive plugin not found", { friendly_plugin_names = false }, { ["MyPlugin"] = expected_found_plugin_path }, "myplugin", nil },
     {
       "is hyphen/underscore sensitive hyphen found",
+      { friendly_plugin_names = false },
       { ["my-plugin"] = expected_found_plugin_path },
       "my-plugin",
       expected_found_plugin_path,
     },
     {
       "is hyphen/underscore sensitive hyphen not found",
+      { friendly_plugin_names = false },
       { ["my-plugin"] = expected_found_plugin_path },
       "my_plugin",
       nil,
     },
     {
       "is hyphen/underscore sensitive underscore found",
+      { friendly_plugin_names = false },
       { ["my_plugin"] = expected_found_plugin_path },
       "my_plugin",
       expected_found_plugin_path,
     },
     {
       "is hyphen/underscore sensitive underscore not found",
+      { friendly_plugin_names = false },
       { ["my_plugin"] = expected_found_plugin_path },
       "my-plugin",
       nil,
     },
     {
       "does not find plugin path when .nvim suffix missing",
+      { friendly_plugin_names = false },
       { ["myplugin.nvim"] = expected_found_plugin_path },
       "myplugin",
       nil,
     },
     {
       "does not find plugin path when unneeded .nvim suffix present",
+      { friendly_plugin_names = false },
       { ["myplugin"] = expected_found_plugin_path },
       "myplugin.nvim",
       nil,
@@ -99,14 +107,18 @@ plenary.busted.describe("test get_plugin_path", function()
 
   for _, test in ipairs(tests) do
     plenary.busted.it(test[1], function()
+      local opts = { lazypath = "" }
+      opts = vim.tbl_deep_extend("force", opts, test[2])
+      Config.setup(opts)
+
       -- would prefer to mock Core.build_plugin_table to return the expected test plugin table,
       -- but can't get that to work at the moment
       local orig_plugins = Core.plugins
       Core.plugin_discovery_done = true
-      Core.plugins = test[2]
+      Core.plugins = test[3]
 
       assert(Core.plugin_discovery_done)
-      assert.equals(test[4], Core.get_plugin_path(test[3]))
+      assert.equals(test[5], Core.get_plugin_path(test[4]))
 
       Core.plugins = orig_plugins
     end)
