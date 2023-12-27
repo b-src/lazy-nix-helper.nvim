@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [Unreleased]
+## [0.3.0] - 2023-12-27
 
 ### Docs
 
