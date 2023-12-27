@@ -170,7 +170,7 @@ To provide nix store paths to the rest of the plugins in your configuration, upd
 ```Lua
 {
   repo/my-cool-plugin.nvim,
-  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin"),
+  dir = require("lazy-nix-helper").get_plugin_path("my-cool-plugin.nvim"),
   ...
 }
 ```
@@ -353,7 +353,7 @@ After moving your `init.lua` directly into your NixOS config and sourcing the re
 
 Lazy-Nix-Helper can't currently find plugins installed by Nix on non-NixOS platforms.
 
-Currently only plugins in the `vimplugin` or `lua5.1` package groups are found. That includes all the plugins that I use, but I think there are other package groups where neovim plugins can exist.
+Lazy-Nix-Helper's plugin discovery mechanism searches the current system's installed packages for packages prefixed with `vimplugin` or `lua5.1`. As of 2023-12-27 these are the only two prefixes used by the vimPlugin packageset in the unstable branch of nixpkgs. This works for now, but may break if a new prefix is added or existing prefixes are changed. It would be best to allow a list of plugin paths to be passed into the `setup()` function so that the nix store paths of neovim plugins could be provided declaratively by the NixOS config.
 
 ## Alternatives
 

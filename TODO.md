@@ -4,8 +4,8 @@
 
 - [x] naive implementation of nix store plugin discovery
 - [ ] make plugin discovery work in a non-nixos environment with nix installed
-- [ ] more robust implementation of nix store plugin discovery
-- [ ] find plugins from all possible package groups, not just `vimplugin` and `lua5.1`
+- [ ] allow passing in a list of nix store paths so that plugin discovery is unnecessary
+- [x] find plugins from all possible package groups, not just `vimplugin` and `lua5.1` (turns out this is all the package groups)
 - [x] get nix store plugin path given a plugin name
 - [x] can plugin names be made friendlier in configuration without risking collisions?
         can we let the user supply "my-plugin" while also checking the store for
