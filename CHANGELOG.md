@@ -5,8 +5,9 @@
 
 ### Docs
 
+- Update docs regarding plugin discovery limitations
 - Add note about plugin display names in the Lazy dashboard
-- Add section on alternative tools to the README
+- Add section on alternative tools
 
 
 ## [0.2.0] - 2023-12-26
