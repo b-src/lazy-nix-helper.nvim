@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Features
+
+- Support passing a nix-generated table of plugin names:plugin paths instead of plugin discovery within the plugin
+
 
 ## [0.3.0] - 2023-12-27
 
