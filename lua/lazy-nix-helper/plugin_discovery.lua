@@ -13,6 +13,11 @@ local Util = require("lazy-nix-helper.util")
 -- before an externally generated plugin list was supported, but it should not be used for new configurations.
 local M = {}
 
+M.vimplugin_capture_group = ".vimplugin%-(.*)"
+M.lua5_1_capture_group = ".lua5%.1%-(.*)"
+
+M.plugin_discovery_done = false
+
 function M.parse_plugin_name_from_nix_store_path(path, capture_group)
   -- path looks like:
   -- /nix/store/<hash>-vimplugin-<name>[-<date>]
@@ -92,6 +97,7 @@ end
 
 function M.populate_plugin_table()
   PluginTable.plugins = M.build_plugin_table()
+  M.plugin_discovery_done = true
 end
 
 return M
