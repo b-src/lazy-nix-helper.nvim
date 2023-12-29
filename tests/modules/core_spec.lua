@@ -1,5 +1,6 @@
 local Core = require("lazy-nix-helper.core")
 local Config = require("lazy-nix-helper.config")
+local PluginTable = require("lazy-nix-helper.plugin_table")
 
 local plenary = require("plenary")
 local assert = require("luassert.assert")
@@ -121,16 +122,13 @@ plenary.busted.describe("test get_plugin_path", function()
       opts = vim.tbl_deep_extend("force", opts, test[2])
       Config.setup(opts)
 
-      -- would prefer to mock Core.build_plugin_table to return the expected test plugin table,
-      -- but can't get that to work at the moment
-      local orig_plugins = Core.plugins
-      Core.plugin_discovery_done = true
-      Core.plugins = test[3]
+      local orig_plugins = PluginTable.plugins
+      PluginTable.plugins = test[3]
 
-      assert(Core.plugin_discovery_done)
+      assert(Config.options.auto_plugin_discovery == false)
       assert.equals(test[5], Core.get_plugin_path(test[4]))
 
-      Core.plugins = orig_plugins
+      PluginTable.plugins = orig_plugins
     end)
   end
 end)
@@ -147,16 +145,16 @@ plenary.busted.describe("test lazypath", function()
     plenary.busted.it(test[1], function()
       -- would prefer to mock Core.build_plugin_table to return the expected test plugin table,
       -- but can't get that to work at the moment
-      local orig_plugins = Core.plugins
-      Core.plugins = test[2]
-      assert(Core.plugin_discovery_done)
+      local orig_plugins = PluginTable.plugins
+      PluginTable.plugins = test[2]
 
       local opts = { lazypath = default_lazypath }
       Config.setup(opts)
 
+      assert(Config.options.auto_plugin_discovery == false)
       assert.equals(test[3], Core.lazypath())
 
-      Core.plugins = orig_plugins
+      PluginTable.plugins = orig_plugins
     end)
   end
 end)
