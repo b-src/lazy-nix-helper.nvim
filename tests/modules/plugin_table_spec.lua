@@ -7,7 +7,7 @@ local assert = require("luassert.assert")
 local mock = require("luassert.mock")
 
 plenary.busted.describe("test populate_provided_plugin_paths", function()
-  local plugin_name ="treesitter"
+  local plugin_name = "treesitter"
   local plugin_path = "/nix/store/2s6wcjbxgwpjisdjw19r7vvx05sj042m-vimplugin-nvim-treesitter"
   local test_plugin_input_table = {}
   test_plugin_input_table[plugin_name] = plugin_path
@@ -17,7 +17,7 @@ plenary.busted.describe("test populate_provided_plugin_paths", function()
       "adds plugin to table when the file path exists",
       test_plugin_input_table,
       true,
-      plugin_path
+      plugin_path,
     },
     {
       "doesn't add plugin to table when file path does not exist",

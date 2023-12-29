@@ -40,7 +40,7 @@ local function get_friendly_plugin_path(plugin_name)
 end
 
 function M.get_plugin_path(plugin_name)
-  if (Config.options.auto_plugin_discovery and not PluginDiscovery.plugin_discovery_done) then
+  if Config.options.auto_plugin_discovery and not PluginDiscovery.plugin_discovery_done then
     PluginDiscovery.populate_plugin_table()
   end
 
@@ -58,6 +58,5 @@ end
 function M.lazypath()
   return M.get_plugin_path("lazy.nvim") or Config.options.lazypath
 end
-
 
 return M
