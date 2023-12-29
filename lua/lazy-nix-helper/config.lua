@@ -23,4 +23,8 @@ function M.setup(options)
   PluginTable.populate_provided_plugin_paths(M.options.input_plugin_table)
 end
 
+function M.list_input_plugins()
+  vim.print(M.options.input_plugin_table)
+end
+
 return M
