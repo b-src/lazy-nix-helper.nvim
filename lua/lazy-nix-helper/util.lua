@@ -8,6 +8,10 @@ function M.table_contains(table, key)
   return table[key] ~= nil
 end
 
+function M.file_exists(path)
+  return vim.loop.fs_stat(path) ~= nil
+end
+
 function M.xor(a, b)
   return (a or b) and not (a and b)
 end
