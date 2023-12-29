@@ -1,4 +1,5 @@
 local Config = require("lazy-nix-helper.config")
+local PluginTable = require("lazy-nix-helper.plugin_table")
 local Util = require("lazy-nix-helper.util")
 
 local M = {}
@@ -7,7 +8,6 @@ M.lua5_1_capture_group = ".lua5%.1%-(.*)"
 
 -- would prefer these to be local variables but this makes testing easier
 M.plugin_discovery_done = false
-M.plugins = {}
 
 local function normalize_plugin_name(plugin_name)
   local plugin_name_lower = string.lower(plugin_name)
@@ -95,7 +95,7 @@ end
 local function populate_plugin_table()
   -- TODO: is extending the table better than just setting it? does it matter?
   -- vim.tbl.extend("force", M.plugins, M.build_plugin_table())
-  M.plugins = M.build_plugin_table()
+  PluginTable.plugins = M.build_plugin_table()
 end
 
 local function get_friendly_plugin_path(plugin_name)
@@ -105,11 +105,11 @@ local function get_friendly_plugin_path(plugin_name)
   -- would prefer to put all the candidate paths in an array and check that there aren't more than one
   -- non-nil values. since iterating over an array in lua will stop at the first nil value, there doesn't
   -- seem to be a great way to do this. try to refactor if another case is ever added
-  local norm_plugin_path = M.plugins[norm_plugin_name]
-  local nvim_appended_plugin_path = M.plugins[nvim_appended]
+  local norm_plugin_path = PluginTable.plugins[norm_plugin_name]
+  local nvim_appended_plugin_path = PluginTable.plugins[nvim_appended]
   local nvim_removed_plugin_path = nil
   if nvim_removed ~= nil then
-    nvim_removed_plugin_path = M.plugins[nvim_removed]
+    nvim_removed_plugin_path = PluginTable.plugins[nvim_removed]
   end
 
   if not (norm_plugin_path or nvim_appended_plugin_path or nvim_removed_plugin_path) then
@@ -146,7 +146,7 @@ function M.get_plugin_path(plugin_name)
     return get_friendly_plugin_path(plugin_name)
   end
 
-  return M.plugins[plugin_name]
+  return PluginTable.plugins[plugin_name]
 end
 
 function M.lazypath()
@@ -154,7 +154,7 @@ function M.lazypath()
 end
 
 function M.list_discovered_plugins()
-  vim.print(M.plugins)
+  vim.print(PluginTable.plugins)
 end
 
 return M
