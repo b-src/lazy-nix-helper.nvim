@@ -24,7 +24,12 @@ plenary.busted.describe("test parse_plugin_name_from_nix_store_path", function()
       PluginDiscovery.vimplugin_capture_group,
       "nvim-treesitter",
     },
-    { "parses plugin name from lua5.1 package set", lua_test_path, PluginDiscovery.lua5_1_capture_group, "telescope.nvim" },
+    {
+      "parses plugin name from lua5.1 package set",
+      lua_test_path,
+      PluginDiscovery.lua5_1_capture_group,
+      "telescope.nvim",
+    },
     {
       "parses plugin name from lua5.1 package set with date suffix",
       lua_test_path_with_date,

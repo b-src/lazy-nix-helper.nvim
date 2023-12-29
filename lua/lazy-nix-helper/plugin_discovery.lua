@@ -2,7 +2,6 @@ local Config = require("lazy-nix-helper.config")
 local PluginTable = require("lazy-nix-helper.plugin_table")
 local Util = require("lazy-nix-helper.util")
 
-
 -- This module contains the original plugin discovery mechanism for Lazy-Nix-Helper
 -- Searching the nix store like this is a nix anti-pattern.
 -- This method works in only a subset of nix/nixos use cases and config arrangements.
