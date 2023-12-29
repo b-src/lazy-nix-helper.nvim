@@ -16,6 +16,12 @@ function M.xor(a, b)
   return (a or b) and not (a and b)
 end
 
+function M.normalize_plugin_name(plugin_name)
+  local plugin_name_lower = string.lower(plugin_name)
+  local plugin_name_separators = string.gsub(plugin_name_lower, "_", "-")
+  return plugin_name_separators
+end
+
 -- use the presence of `nixos-rebuild` as a proxy for this being a nixOS system
 function M.in_a_nix_environment()
   return vim.fn.executable("nixos-rebuild") == 1
