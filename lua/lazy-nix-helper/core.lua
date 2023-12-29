@@ -133,7 +133,7 @@ local function get_friendly_plugin_path(plugin_name)
 end
 
 function M.get_plugin_path(plugin_name)
-  if not M.plugin_discovery_done then
+  if (Config.options.auto_plugin_discovery and not M.plugin_discovery_done) then
     populate_plugin_table()
     M.plugin_discovery_done = true
   end
