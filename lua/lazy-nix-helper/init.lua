@@ -28,6 +28,10 @@ function M.list_discovered_plugins()
   PluginTable.list_discovered_plugins()
 end
 
+function M.list_input_plugins()
+  Config.list_input_plugins()
+end
+
 function M.print_environment_info()
   Util.print_environment_info()
 end
