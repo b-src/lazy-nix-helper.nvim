@@ -4,11 +4,6 @@ local PluginTable = require("lazy-nix-helper.plugin_table")
 local Util = require("lazy-nix-helper.util")
 
 local M = {}
-M.vimplugin_capture_group = ".vimplugin%-(.*)"
-M.lua5_1_capture_group = ".lua5%.1%-(.*)"
-
--- would prefer these to be local variables but this makes testing easier
-M.plugin_discovery_done = false
 
 local function get_friendly_plugin_path(plugin_name)
   local norm_plugin_name = Util.normalize_plugin_name(plugin_name)
@@ -45,9 +40,8 @@ local function get_friendly_plugin_path(plugin_name)
 end
 
 function M.get_plugin_path(plugin_name)
-  if (Config.options.auto_plugin_discovery and not M.plugin_discovery_done) then
+  if (Config.options.auto_plugin_discovery and not PluginDiscovery.plugin_discovery_done) then
     PluginDiscovery.populate_plugin_table()
-    M.plugin_discovery_done = true
   end
 
   if not plugin_name then
