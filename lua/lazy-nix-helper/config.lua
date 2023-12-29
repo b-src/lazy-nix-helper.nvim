@@ -1,3 +1,4 @@
+local PluginTable = require("lazy-nix-helper.plugin_table")
 local Util = require("lazy-nix-helper.util")
 
 local M = {}
@@ -18,6 +19,8 @@ function M.setup(options)
   if M.options.lazypath == nil then
     Util.error("A default lazypath must be provided")
   end
+
+  PluginTable.populate_provided_plugin_paths(M.options.input_plugin_table)
 end
 
 return M
