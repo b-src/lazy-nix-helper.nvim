@@ -4,43 +4,6 @@ local Config = require("lazy-nix-helper.config")
 local plenary = require("plenary")
 local assert = require("luassert.assert")
 
-plenary.busted.describe("test parse_plugin_name_from_nix_store_path", function()
-  -- TODO: make these shared constants
-  local vimplugin_test_path = "/nix/store/2s6wcjbxgwpjisdjw19r7vvx05sj042m-vimplugin-nvim-treesitter"
-  local vimplugin_test_path_with_date =
-    "/nix/store/2s6wcjbxgwpjisdjw19r7vvx05sj042m-vimplugin-nvim-treesitter-2023-10-23"
-  local lua_test_path = "/nix/store/zhigkkdw9az0gxy8ylbnhzwgkm6cdcw2-lua5.1-telescope.nvim-2023-10-23"
-  local lua_test_path_with_date = "/nix/store/zhigkkdw9az0gxy8ylbnhzwgkm6cdcw2-lua5.1-telescope.nvim-2023-10-23"
-
-  local tests = {
-    {
-      "parses plugin name from vimplugins package set",
-      vimplugin_test_path,
-      Core.vimplugin_capture_group,
-      "nvim-treesitter",
-    },
-    {
-      "parses plugin name from vimplugins package set with date suffix",
-      vimplugin_test_path_with_date,
-      Core.vimplugin_capture_group,
-      "nvim-treesitter",
-    },
-    { "parses plugin name from lua5.1 package set", lua_test_path, Core.lua5_1_capture_group, "telescope.nvim" },
-    {
-      "parses plugin name from lua5.1 package set with date suffix",
-      lua_test_path_with_date,
-      Core.lua5_1_capture_group,
-      "telescope.nvim",
-    },
-  }
-
-  for _, test in ipairs(tests) do
-    plenary.busted.it(test[1], function()
-      assert.equals(test[4], Core.parse_plugin_name_from_nix_store_path(test[2], test[3]))
-    end)
-  end
-end)
-
 plenary.busted.describe("test get_plugin_path", function()
   local expected_found_plugin_path = "/nix/store/hash123-packageset-plugin-name"
   local wrong_path = "/nix/store/hash456-packageset-other-plugin"
