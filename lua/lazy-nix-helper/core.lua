@@ -59,8 +59,5 @@ function M.lazypath()
   return M.get_plugin_path("lazy.nvim") or Config.options.lazypath
 end
 
-function M.list_discovered_plugins()
-  vim.print(PluginTable.plugins)
-end
 
 return M

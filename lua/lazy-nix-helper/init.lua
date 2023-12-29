@@ -1,6 +1,7 @@
 local Config = require("lazy-nix-helper.config")
 local Core = require("lazy-nix-helper.core")
 local Mason = require("lazy-nix-helper.mason")
+local PluginTable = require("lazy-nix-helper.plugin_table")
 local Util = require("lazy-nix-helper.util")
 
 local M = {}
@@ -24,7 +25,7 @@ end
 
 -- public debug/troubleshooting api
 function M.list_discovered_plugins()
-  Core.list_discovered_plugins()
+  PluginTable.list_discovered_plugins()
 end
 
 function M.print_environment_info()
