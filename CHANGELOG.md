@@ -1,10 +1,15 @@
 # Changelog
 
-## [Unreleased]
+## [0.4.0] 2023-12-29
 
 ### Features
 
 - Support passing a nix-generated table of plugin names:plugin paths instead of plugin discovery within the plugin
+  + This should also mean that Lazy-Nix-Helper will work with nix-installed plugins on a non-NixOS system, but I haven't tested that
+
+### Docs
+
+- Update docs to provide instructions for generating the input plugin table from Nix
 
 
 ## [0.3.0] - 2023-12-27
