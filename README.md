@@ -283,7 +283,7 @@ The necessary components are:
 
 `neovim.nix` module:
 ```Nix
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
