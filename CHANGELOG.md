@@ -1,5 +1,11 @@
 # Changelog
 
+## [UNRELEASED]
+
+### Docs
+
+- Add missing `lib` input in recommended nix configuration
+
 ## [0.4.0] 2023-12-29
 
 ### Features
