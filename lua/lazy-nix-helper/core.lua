@@ -12,6 +12,7 @@ local function get_friendly_plugin_path(plugin_name)
   -- would prefer to put all the candidate paths in an array and check that there aren't more than one
   -- non-nil values. since iterating over an array in lua will stop at the first nil value, there doesn't
   -- seem to be a great way to do this. try to refactor if another case is ever added
+  local default_plugin_path = PluginTable.plugins[plugin_name]
   local norm_plugin_path = PluginTable.plugins[norm_plugin_name]
   local nvim_appended_plugin_path = PluginTable.plugins[nvim_appended]
   local nvim_removed_plugin_path = nil
@@ -19,15 +20,18 @@ local function get_friendly_plugin_path(plugin_name)
     nvim_removed_plugin_path = PluginTable.plugins[nvim_removed]
   end
 
-  if not (norm_plugin_path or nvim_appended_plugin_path or nvim_removed_plugin_path) then
+  if not (default_plugin_path or norm_plugin_path or nvim_appended_plugin_path or nvim_removed_plugin_path) then
     return nil
   end
 
-  if not (Util.xor(Util.xor(norm_plugin_path, nvim_appended_plugin_path), nvim_removed_plugin_path)) then
+  if not (Util.xor(Util.xor(Util.xor(default_plugin_path, norm_plugin_path), nvim_appended_plugin_path), nvim_removed_plugin_path)) then
     Util.error("Name collision found when using friendly plugin discovery for " .. plugin_name)
   end
 
   -- at this point we know only one non-nil path was found
+  if default_plugin_path ~= nil then
+    return default_plugin_path
+  end
   if norm_plugin_path ~= nil then
     return norm_plugin_path
   end

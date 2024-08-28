@@ -2,6 +2,10 @@
 
 ## [UNRELEASED]
 
+### Fixes
+
+- Fix an issue when `friendly_plugin_names` is enabled where an exact match of the plugin name would not be found if the plugin name was altered by the normalize function
+
 ### Docs
 
 - Add missing `lib` input in recommended nix configuration
