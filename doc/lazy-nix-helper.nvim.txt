@@ -1,4 +1,4 @@
-*lazy-nix-helper.nvim.txt*  For Neovim >= 0.9.0? Last change: 2023 December 29
+*lazy-nix-helper.nvim.txt*   For Neovim >= 0.9.0?  Last change: 2024 August 28
 
 ==============================================================================
 Table of Contents                     *lazy-nix-helper.nvim-table-of-contents*
@@ -359,7 +359,7 @@ Generate the plugins table 5. Include the rest of your config files with
 `neovim.nix` module:
 
 >nix
-    { pkgs, config, ... }:
+    { pkgs, config, lib, ... }:
     
     let
       lazy-nix-helper-nvim = pkgs.vimUtils.buildVimPlugin {
