@@ -128,6 +128,20 @@ plenary.busted.describe("test get_plugin_path", function()
       "myplugin.nvim",
       expected_found_plugin_path,
     },
+    {
+      "strict names does not find plugin path when -scm suffix missing",
+      { friendly_plugin_names = false },
+      { ["myplugin.nvim-scm"] = expected_found_plugin_path },
+      "myplugin.nvim",
+      nil,
+    },
+    {
+      "friendly names finds plugin path when -scm suffix missing",
+      { friendly_plugin_names = true },
+      { ["myplugin.nvim-scm"] = expected_found_plugin_path },
+      "myplugin.nvim",
+      expected_found_plugin_path,
+    },
   }
 
   for _, test in ipairs(tests) do
