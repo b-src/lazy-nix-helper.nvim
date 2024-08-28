@@ -12,7 +12,6 @@
         e.g. "My-Plugin", "my_plugin", "my-plugin.nvim"...
 - [x] figure out how to play nicely with mason
 - [x] see if there's a way to improve plugin name display in the lazy dashboard (i.e. plugin name, not full nix store path)
-        there is not. see the `Configuration of Other Plugins` section in the README for more details
 
 ## Configuration
 

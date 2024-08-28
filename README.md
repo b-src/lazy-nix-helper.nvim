@@ -204,17 +204,6 @@ Don't forget to update each plugin's dependencies as well
 }
 ```
 
-**Note on Plugin Names in Lazy Dashboard**
-
-When you open the lazy dashboard with `:Lazy`, each plugin's display name is determined by its directory path. Using nix store paths, this becomes difficult to read because each plugin name is prepended with it's hash. As far as I'm aware there's no way to fix this.
-
-Lazy provides the `name` option for plugin config which sets a custom display name for the plugin, but this also:
- - sets a custom directory path for the plugin
- - uses the custom name to try to find the plugins `setup()` function
-
-Even with a `dir` configured, setting `name` will break plugin setup.
-
-
 ### Mason
 
 Mason is a package manager for LSP servers, DAP servers, linters, and formatters. Just like plugin management with Lazy, this conflicts with Nix. The easiest way to keep mason in your config on non-Nix platforms while disabling it on NixOS is to use the provided `mason_enabled` function to conditionally enable Mason.

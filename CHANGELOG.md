@@ -5,6 +5,7 @@
 ### Docs
 
 - Add missing `lib` input in recommended nix configuration
+- Remove note about plugin names in lazy dashboard since this was fixed upstream at some point
 
 ## [0.4.0] 2023-12-29
 
