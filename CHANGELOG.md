@@ -2,6 +2,10 @@
 
 ## [UNRELEASED]
 
+### Features
+
+- Update `get_plugin_path()` to check for a `-scm` suffix when `friendly_plugin_names` is set
+
 ### Fixes
 
 - Fix an issue when `friendly_plugin_names` is enabled where an exact match of the plugin name would not be found if the plugin name was altered by the normalize function
