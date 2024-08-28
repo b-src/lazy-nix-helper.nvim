@@ -10,6 +10,20 @@ plenary.busted.describe("test get_plugin_path", function()
   local wrong_path = "/nix/store/hash456-packageset-other-plugin"
   local tests = {
     {
+      "cmp_luasnip is handled correctly friendly names",
+      { friendly_plugin_names = true },
+      { ["cmp_luasnip"] = expected_found_plugin_path },
+      "cmp_luasnip",
+      expected_found_plugin_path,
+    },
+    {
+      "FixCursorHold.nvim is handled correctly friendly names",
+      { friendly_plugin_names = true },
+      { ["FixCursorHold.nvim"] = expected_found_plugin_path },
+      "FixCursorHold.nvim",
+      expected_found_plugin_path,
+    },
+    {
       "returns path when plugin found strict names",
       { friendly_plugin_names = false },
       { ["myplugin"] = expected_found_plugin_path },
