@@ -1,6 +1,7 @@
 local Core = require("lazy-nix-helper.core")
 local Config = require("lazy-nix-helper.config")
 local PluginTable = require("lazy-nix-helper.plugin_table")
+local Util = require("lazy-nix-helper.util")
 
 local plenary = require("plenary")
 local assert = require("luassert.assert")
@@ -150,13 +151,20 @@ plenary.busted.describe("test get_plugin_path", function()
       opts = vim.tbl_deep_extend("force", opts, test[2])
       Config.setup(opts)
 
+      local orig_file_exists = Util.file_exists
       local orig_plugins = PluginTable.plugins
-      PluginTable.plugins = test[3]
+      PluginTable.plugins = {}
+      function Util.file_exists(file_path)
+        return true
+      end
+
+      PluginTable.populate_provided_plugin_paths(test[3], opts.friendly_plugin_names)
 
       assert(Config.options.auto_plugin_discovery == false)
       assert.equals(test[5], Core.get_plugin_path(test[4]))
 
       PluginTable.plugins = orig_plugins
+      Util.file_exists = orig_file_exists
     end)
   end
 end)
