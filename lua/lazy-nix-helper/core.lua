@@ -21,24 +21,14 @@ local function get_friendly_plugin_path(plugin_name)
   end
   local scm_appended_plugin_path = PluginTable.plugins[scm_appended]
 
-  if
-    not (
-      norm_plugin_path
-      or nvim_appended_plugin_path
-      or nvim_removed_plugin_path
-      or scm_appended_plugin_path
-    )
-  then
+  if not (norm_plugin_path or nvim_appended_plugin_path or nvim_removed_plugin_path or scm_appended_plugin_path) then
     return nil
   end
 
   if
     not (
       Util.xor(
-        Util.xor(
-          Util.xor(norm_plugin_path, nvim_appended_plugin_path),
-          nvim_removed_plugin_path
-        ),
+        Util.xor(Util.xor(norm_plugin_path, nvim_appended_plugin_path), nvim_removed_plugin_path),
         scm_appended_plugin_path
       )
     )
