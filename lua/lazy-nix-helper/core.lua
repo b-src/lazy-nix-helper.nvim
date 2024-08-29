@@ -22,11 +22,29 @@ local function get_friendly_plugin_path(plugin_name)
   end
   local scm_appended_plugin_path = PluginTable.plugins[scm_appended]
 
-  if not (default_plugin_path or norm_plugin_path or nvim_appended_plugin_path or nvim_removed_plugin_path or scm_appended_plugin_path) then
+  if
+    not (
+      default_plugin_path
+      or norm_plugin_path
+      or nvim_appended_plugin_path
+      or nvim_removed_plugin_path
+      or scm_appended_plugin_path
+    )
+  then
     return nil
   end
 
-  if not (Util.xor(Util.xor(Util.xor(Util.xor(default_plugin_path, norm_plugin_path), nvim_appended_plugin_path), nvim_removed_plugin_path), scm_appended_plugin_path)) then
+  if
+    not (
+      Util.xor(
+        Util.xor(
+          Util.xor(Util.xor(default_plugin_path, norm_plugin_path), nvim_appended_plugin_path),
+          nvim_removed_plugin_path
+        ),
+        scm_appended_plugin_path
+      )
+    )
+  then
     Util.error("Name collision found when using friendly plugin discovery for " .. plugin_name)
   end
 
