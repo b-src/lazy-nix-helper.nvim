@@ -7,7 +7,7 @@ M.namespace = vim.api.nvim_create_namespace("LazyNixHelper")
 
 local defaults = {
   lazypath = nil,
-  friendly_plugin_names = true,
+  friendly_plugin_names = false,
   auto_plugin_discovery = false,
   input_plugin_table = {},
 }
