@@ -179,10 +179,14 @@ plenary.busted.describe("test lazypath", function()
 
   for _, test in ipairs(tests) do
     plenary.busted.it(test[1], function()
-      -- would prefer to mock Core.build_plugin_table to return the expected test plugin table,
-      -- but can't get that to work at the moment
+      local orig_file_exists = Util.file_exists
       local orig_plugins = PluginTable.plugins
-      PluginTable.plugins = test[2]
+      PluginTable.plugins = {}
+      function Util.file_exists(file_path)
+        return true
+      end
+
+      PluginTable.populate_provided_plugin_paths(test[2], false)
 
       local opts = { lazypath = default_lazypath }
       Config.setup(opts)
@@ -191,6 +195,7 @@ plenary.busted.describe("test lazypath", function()
       assert.equals(test[3], Core.lazypath())
 
       PluginTable.plugins = orig_plugins
+      Util.file_exists = orig_file_exists
     end)
   end
 end)
