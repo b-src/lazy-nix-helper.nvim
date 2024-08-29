@@ -8,6 +8,7 @@
 
 ### Fixes
 
+- Set `friendly_plugin_names` to `false` by default
 - Fix an issue when `friendly_plugin_names` is enabled where an exact match of the plugin name would not be found if the plugin name was altered by the normalize function
 
 ### Docs
