@@ -60,10 +60,24 @@ plenary.busted.describe("test get_plugin_path", function()
       nil,
     },
     {
+      "is case sensitive the other way strict names plugin not found",
+      { friendly_plugin_names = false },
+      { ["myplugin"] = expected_found_plugin_path },
+      "MyPlugin",
+      nil,
+    },
+    {
       "is not case sensitive friendly names plugin found",
       { friendly_plugin_names = true },
       { ["myplugin"] = expected_found_plugin_path },
       "MyPlugin",
+      expected_found_plugin_path,
+    },
+    {
+      "is not case sensitive the other way friendly names plugin found",
+      { friendly_plugin_names = true },
+      { ["MyPlugin"] = expected_found_plugin_path },
+      "myplugin",
       expected_found_plugin_path,
     },
     {
@@ -78,6 +92,13 @@ plenary.busted.describe("test get_plugin_path", function()
       { friendly_plugin_names = true },
       { ["my-plugin"] = expected_found_plugin_path },
       "my_plugin",
+      expected_found_plugin_path,
+    },
+    {
+      "is not hyphen/underscore sensitive the other way friendly names hyphen found",
+      { friendly_plugin_names = true },
+      { ["my_plugin"] = expected_found_plugin_path },
+      "my-plugin",
       expected_found_plugin_path,
     },
     {
