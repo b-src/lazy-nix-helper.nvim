@@ -20,7 +20,7 @@ function M.setup(options)
     Util.error("A default lazypath must be provided")
   end
 
-  PluginTable.populate_provided_plugin_paths(M.options.input_plugin_table)
+  PluginTable.populate_provided_plugin_paths(M.options.input_plugin_table, M.options.friendly_plugin_names)
 end
 
 function M.list_input_plugins()
