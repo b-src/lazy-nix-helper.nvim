@@ -1,6 +1,6 @@
 # Changelog
 
-## [UNRELEASED]
+## [0.5.0] 2024-08-28
 
 ### Features
 
