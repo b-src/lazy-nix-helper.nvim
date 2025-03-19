@@ -1,6 +1,6 @@
 # Changelog
 
-## UNRELEASED
+## [0.7.0] 2025-03-18
 
 ### Docs
 
