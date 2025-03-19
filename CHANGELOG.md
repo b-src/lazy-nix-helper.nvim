@@ -4,6 +4,7 @@
 
 ### Docs
 
+- Update sanitizePluginName function in example NixOS config in README to account for plugins that have moved to different package sets since the original release of lazy-nix-helper
 - Add nixCats and nvf to the Alternatives section in the README
 
 ## [0.6.0] 2024-08-28
