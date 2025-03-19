@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED
+
+### Docs
+
+- Add nixCats and nvf to the Alternatives section in the README
+
 ## [0.6.0] 2024-08-28
 
 ### Features
