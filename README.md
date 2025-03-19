@@ -376,10 +376,9 @@ Besides Lazy-Nix-Helper there are other tools and strategies you might choose to
 
 ### Nix-based solutions
  - [Home-Manager](https://nix-community.github.io/home-manager/) provides options for installing and configuring neovim plugins
+ - [nixCats](https://github.com/BirdeeHub/nixCats-nvim/) is a neovim package manager written in Nix. Insteady of "nixifying" your config, use Nix to manage your plugin installation and Lua for configuration
  - [NixVim](https://github.com/nix-community/nixvim/) is a neovim distribution built around Nix modules. It provides nix-style configuration options for every neovim configuration option as well as options for many plugins
-
- ### Prebuilt flakes
- TODO: include some examples
+ - [nvf](https://github.com/NotAShelf/nvf/) is a flake-based neovim configuration framework
 
  ### Non-nix
  - Using your existing config as-is. Depending on how complicated your current config is and what it includes, you may be able to copy your dotfiles and have everything work out of the box. The main downside is that you lose the reproducability benefits of nix by using a different package manager
